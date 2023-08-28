@@ -1,0 +1,38 @@
+[gd_scene load_steps=7 format=3 uid="uid://dr3wxonw2fviu"]
+
+[ext_resource type="Texture2D" uid="uid://h7cc8bnu4p4u" path="res://kenney_prototypetextures/PNG/Purple/texture_02.png" id="1_7mx70"]
+[ext_resource type="Script" path="res://projectile_weapon.gd" id="1_dl5tr"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rvv8b"]
+size = Vector3(0.334433, 0.257202, 2.51046)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sj6uw"]
+albedo_texture = ExtResource("1_7mx70")
+
+[sub_resource type="PrismMesh" id="PrismMesh_6vlqc"]
+material = SubResource("StandardMaterial3D_sj6uw")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_px3rf"]
+size = Vector3(7.26559, 1, 5.71806)
+
+[node name="Projectile_weapon" type="RigidBody3D"]
+collision_layer = 2
+freeze = true
+script = ExtResource("1_dl5tr")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00733495, -0.00695134, -0.00397944)
+shape = SubResource("BoxShape3D_rvv8b")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.294134, 0, 0, 0, 0.19663, 0, 0, 0, 2.45459, 0, 0, 0)
+layers = 2
+mesh = SubResource("PrismMesh_6vlqc")
+
+[node name="PW_pickup_area" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PW_pickup_area"]
+shape = SubResource("BoxShape3D_px3rf")
+
+[node name="Muzzle" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.4438)

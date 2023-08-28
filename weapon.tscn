@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cr7jrosxfvhpb"]
+
+[ext_resource type="Script" path="res://Weapon.gd" id="1_s7p0t"]
+
+[node name="RigidBody3D" type="RigidBody3D"]
+script = ExtResource("1_s7p0t")

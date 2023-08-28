@@ -1,0 +1,33 @@
+[gd_scene load_steps=3 format=3 uid="uid://dmbbp2ldxcgkt"]
+
+[ext_resource type="Script" path="res://PlayerUI.gd" id="1_p3l3i"]
+[ext_resource type="FontFile" uid="uid://bjvi0ydeg2ykw" path="res://Calibri.ttf" id="2_jbcu6"]
+
+[node name="CanvasLayer" type="CanvasLayer"]
+script = ExtResource("1_p3l3i")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -112.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_jbcu6")
+theme_override_font_sizes/font_size = 30
+text = "Ammo               "
+horizontal_alignment = 2
+
+[node name="Label2" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_fonts/font = ExtResource("2_jbcu6")
+theme_override_font_sizes/font_size = 20
+text = "
+
+"
+horizontal_alignment = 2

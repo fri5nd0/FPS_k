@@ -1,0 +1,38 @@
+[gd_scene load_steps=7 format=3 uid="uid://djys3qhoa60dh"]
+
+[ext_resource type="Script" path="res://burst_rife.gd" id="1_sbxn2"]
+[ext_resource type="Texture2D" uid="uid://dn405q5c4qwuv" path="res://kenney_prototypetextures/PNG/Red/texture_04.png" id="2_rqfji"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wldq2"]
+albedo_texture = ExtResource("2_rqfji")
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_nit78"]
+material = SubResource("StandardMaterial3D_wldq2")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_qhmuj"]
+size = Vector3(1.73071, 0.157912, 0.176861)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_la3vr"]
+size = Vector3(4.62365, 0.145279, 4.40889)
+
+[node name="Burst_rife" type="RigidBody3D"]
+collision_layer = 2
+freeze = true
+script = ExtResource("1_sbxn2")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(-3.552e-06, 0.00151233, -0.154646, -0.147794, -0.0112481, 0, -0.00197601, 0.841287, 0.000277996, 0, 0, 0)
+mesh = SubResource("CylinderMesh_nit78")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(-0.00359539, 0, -0.999994, 0, 1, 0, 0.999994, 0, -0.00359539, 0, 0, 0)
+shape = SubResource("BoxShape3D_qhmuj")
+
+[node name="Pickup_Area" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Pickup_Area"]
+shape = SubResource("BoxShape3D_la3vr")
+
+[node name="bullet_shot_delay" type="Timer" parent="."]
+
+[connection signal="timeout" from="bullet_shot_delay" to="." method="_on_bullet_shot_delay_timeout"]

@@ -1,0 +1,38 @@
+[gd_scene load_steps=7 format=3 uid="uid://befk6n2lyli5t"]
+
+[ext_resource type="Script" path="res://assault_rife.gd" id="1_ar156"]
+[ext_resource type="Texture2D" uid="uid://bqr6m4p4j4bo7" path="res://kenney_prototypetextures/PNG/Orange/texture_07.png" id="2_optsq"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xjxwl"]
+albedo_texture = ExtResource("2_optsq")
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_kk1x8"]
+material = SubResource("StandardMaterial3D_xjxwl")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fn8sd"]
+size = Vector3(0.275607, 0.293978, 1.09738)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1m3hv"]
+size = Vector3(4.52513, 0.363381, 4.52296)
+
+[node name="Assault_rife" type="RigidBody3D"]
+collision_layer = 2
+freeze = true
+script = ExtResource("1_ar156")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.124289, 0.0708292, -0.0155434, -0.0103745, -0.0786522, -0.154514, -0.0169181, 0.568576, -0.0194381, -0.00474036, -0.00384891, -0.00975357)
+layers = 2
+mesh = SubResource("CylinderMesh_kk1x8")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_fn8sd")
+
+[node name="Pickup_area" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Pickup_area"]
+shape = SubResource("BoxShape3D_1m3hv")
+
+[node name="Firerate_timer" type="Timer" parent="."]
+
+[connection signal="timeout" from="Firerate_timer" to="." method="_on_firerate_timer_timeout"]
