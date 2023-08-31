@@ -16,12 +16,13 @@ func _init():
 	# Called when the node enters the scene tree for the first time.
 	
 func _fire(aimcast):
-	if Input.is_action_just_pressed("fire"):
-		for bullet_count in range(firerate):
-			if !is_firing:
-				hitscan_fire(aimcast)
-				bullet_count +=1
-				await get_tree().create_timer(0.05).timeout
+	if ammo>0:
+		if Input.is_action_just_pressed("fire"):
+			for bullet_count in range(firerate):
+				if !is_firing:
+					hitscan_fire(aimcast)
+					bullet_count +=1
+					await get_tree().create_timer(0.05).timeout
 				
 func _ready():
 	pass # Replace with function body.

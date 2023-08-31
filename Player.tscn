@@ -52,7 +52,7 @@ shape = SubResource("2")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.977011, 0, 1.33956, 0)
 
 [node name="Camera3D" type="Camera3D" parent="PlayerBody/Head"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1.02353, -0.0210436, 0.219756, -0.140787)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1.02353, -0.0210436, 0.219756, -0.298231)
 fov = 110.5
 
 [node name="RayCast3D" type="RayCast3D" parent="PlayerBody/Head/Camera3D"]
