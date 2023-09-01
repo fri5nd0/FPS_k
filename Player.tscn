@@ -27,10 +27,11 @@ _data = {
 "RESET": SubResource("7")
 }
 
-[node name="Player" type="Node3D"]
+[node name="PlayerNode" type="Node3D"]
 
 [node name="PlayerBody" type="CharacterBody3D" parent="." groups=["Player"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.181837, -0.0465543, -0.0464864)
+collision_layer = 2
 script = ExtResource("1_5ikuv")
 
 [node name="PickupArea" type="Area3D" parent="PlayerBody"]
@@ -74,6 +75,7 @@ grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 texture = ExtResource("2_3tudu")
+metadata/_edit_use_anchors_ = true
 
 [node name="Gun" type="Node3D" parent="PlayerBody/Head"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.452697, -0.109354, -0.261941)

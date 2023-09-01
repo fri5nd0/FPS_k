@@ -1,4 +1,3 @@
-res://Player.tscn
 res://PauseMenu.tscn
 res://hitscangun.tscn
 res://assault_rife.tscn
@@ -9,4 +8,5 @@ res://Projectile.tscn
 res://World.tscn
 res://player_ui.tscn
 res://canvas_layer.tscn
+res://Player.tscn
 res://player.gd

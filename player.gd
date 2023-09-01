@@ -37,12 +37,12 @@ var rear_pointer = 0
 func _enter_tree():
 	set_multiplayer_authority(str(name).to_int())
 func _ready():
-	if is_multiplayer_authority():
-		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED#Captures mouse input events in the window
-		camera.current = true
+	if not is_multiplayer_authority():return
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED#Captures mouse input events in the window
+	camera.current = true
 
 func _process(delta):
-	if is_multiplayer_authority(): return
+	if not is_multiplayer_authority(): return
 	ammocount = getAmmoCountFromCurrentGun()
 	print(ammocount)
 	player_ui.updateAmmoCount(ammocount)
@@ -54,18 +54,18 @@ func _process(delta):
 				head.rotate_x(deg_to_rad(-axis_vector.y) * controller_sens)
 				head.rotation.x = clamp(head.rotation.x, deg_to_rad(-90), deg_to_rad(90))
 func _input(event):
-	if is_multiplayer_authority():return
+	if not is_multiplayer_authority():return
 	if event is InputEventMouseMotion:
 			rotate_y(deg_to_rad(-event.relative.x * mouse_sens))
 			head.rotate_x(deg_to_rad(-event.relative.y * mouse_sens))
 			head.rotation.x = clamp(head.rotation.x, deg_to_rad(-89), deg_to_rad(89))
 func _unhandled_input(event):
-	if is_multiplayer_authority():return
+	if not is_multiplayer_authority():return
 	if event.is_action_pressed("Pause"):
 			Pause.is_paused = !Pause.is_paused
 		
 func _physics_process(delta):
-	if is_multiplayer_authority():return
+	if not is_multiplayer_authority():return
 					
 	if gun.get_child_count() > 0:
 			var in_hand = gun.get_child(0)

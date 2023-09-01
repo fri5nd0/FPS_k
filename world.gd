@@ -21,5 +21,5 @@ func _on_join_b_pressed():
 func add_player(peer_id):
 	var player = Player.instantiate()
 	player.get_child(0).name = str(peer_id)
-	add_child(player)
+	add_child(player, true)
  
