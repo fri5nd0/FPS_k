@@ -94,5 +94,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.12514, 0)
 target_position = Vector3(0, -1.5, 0)
 
 [node name="PauseMenu" parent="PlayerBody" instance=ExtResource("3")]
+metadata/_edit_use_anchors_ = true
 
 [node name="CanvasLayer" parent="PlayerBody" instance=ExtResource("5_axl3w")]

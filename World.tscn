@@ -61,7 +61,7 @@ placeholder_text = "Enter Address"
 alignment = 1
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("res://Player.tscn")
+_spawnable_scenes = PackedStringArray("res://player_body.tscn")
 spawn_path = NodePath("..")
 
 [node name="pweapon" parent="." instance=ExtResource("5_cv8j3")]

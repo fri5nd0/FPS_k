@@ -10,3 +10,5 @@ res://player_ui.tscn
 res://canvas_layer.tscn
 res://Player.tscn
 res://player.gd
+res://world.gd
+res://player_body.tscn

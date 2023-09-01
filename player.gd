@@ -3,7 +3,6 @@ extends CharacterBody3D
 class_name  Player
 
 var health = 200
-var damage = 100
 var speed = 10
 var direction = Vector3() # to represent positions in 3D space 
 var mouse_sens = 0.05#sets mouse sensitivity

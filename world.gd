@@ -3,7 +3,7 @@ extends Node
 @onready var menu = $CanvasLayer/MainMenu
 @onready var address = $CanvasLayer/MainMenu/MC/Options/address_input
 const port = 9999
-const Player = preload("res://Player.tscn")
+const Player = preload("res://player_body.tscn")
 var enet_p = ENetMultiplayerPeer.new()
 
 func _on_host_b_pressed():
@@ -20,6 +20,6 @@ func _on_join_b_pressed():
 	
 func add_player(peer_id):
 	var player = Player.instantiate()
-	player.get_child(0).name = str(peer_id)
+	player.name = str(peer_id)
 	add_child(player, true)
  
