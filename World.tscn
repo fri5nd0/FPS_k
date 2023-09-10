@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://6skro06fw5tq"]
+[gd_scene load_steps=12 format=3 uid="uid://6skro06fw5tq"]
 
 [ext_resource type="Script" path="res://world.gd" id="1_m1t37"]
 [ext_resource type="PackedScene" uid="uid://dk6uyot5kcx6r" path="res://map.tscn" id="2_ar3ij"]
@@ -9,6 +9,8 @@
 [ext_resource type="PackedScene" uid="uid://c62tlmx8k8wy" path="res://sniper.tscn" id="7_vqunu"]
 [ext_resource type="PackedScene" uid="uid://djys3qhoa60dh" path="res://burst_rife.tscn" id="8_x4xvw"]
 [ext_resource type="PackedScene" uid="uid://dr3wxonw2fviu" path="res://projectile_weapon.tscn" id="9_q6t7r"]
+[ext_resource type="PackedScene" uid="uid://ua6xbfhlnb7y" path="res://grenade_launcher.tscn" id="10_wmu8k"]
+[ext_resource type="PackedScene" uid="uid://druvtthu3lkxd" path="res://respawn_area.tscn" id="11_rt3mx"]
 
 [node name="World" type="Node"]
 script = ExtResource("1_m1t37")
@@ -71,7 +73,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.28974, -1.56262, 6.92308)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.4239, -2.45627, -5.08317)
 
 [node name="enemy" parent="." instance=ExtResource("2_eodqu")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.40699, 0, 6.65983)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0, 9)
 
 [node name="Assault_rife" parent="." instance=ExtResource("6_b2r82")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.9539, -2.35863, 2.19244)
@@ -84,6 +86,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.15289, 0.0583272, -4.32376)
 
 [node name="Projectile_weapon" parent="." instance=ExtResource("9_q6t7r")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.97406, -2.32083, -4.37046)
+
+[node name="grenade_launcher" parent="." instance=ExtResource("10_wmu8k")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.0561, -2.41711, 4.89914)
+
+[node name="Respawn_Area" parent="." instance=ExtResource("11_rt3mx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45.725, 34.739, 0)
 
 [connection signal="pressed" from="CanvasLayer/MainMenu/MC/Options/HostB" to="." method="_on_host_b_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/MC/Options/JoinB" to="." method="_on_join_b_pressed"]

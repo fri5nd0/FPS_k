@@ -1,0 +1,59 @@
+[gd_scene load_steps=7 format=3 uid="uid://druvtthu3lkxd"]
+
+[ext_resource type="Texture2D" uid="uid://b0e2f4n466y1s" path="res://kenney_prototypetextures/PNG/Purple/texture_01.png" id="1_ya37g"]
+[ext_resource type="Script" path="res://Sprite3D.gd" id="2_j22um"]
+[ext_resource type="Script" path="res://SubViewport.gd" id="3_wc67i"]
+[ext_resource type="FontFile" uid="uid://bjvi0ydeg2ykw" path="res://Calibri.ttf" id="4_t7me3"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lv4dy"]
+albedo_texture = ExtResource("1_ya37g")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_8mccs"]
+viewport_path = NodePath("Sprite3D/SubViewport")
+
+[node name="Respawn_Area" type="Node3D"]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+material_override = SubResource("StandardMaterial3D_lv4dy")
+use_collision = true
+size = Vector3(16.8347, 7.60814, 15.3795)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="CSGBox3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.549449, 0)
+operation = 2
+size = Vector3(12.971, 6.61066, 13.3596)
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.66835, -0.0358554, -0.390401)
+billboard = 1
+texture = SubResource("ViewportTexture_8mccs")
+script = ExtResource("2_j22um")
+
+[node name="SubViewport" type="SubViewport" parent="Sprite3D"]
+transparent_bg = true
+script = ExtResource("3_wc67i")
+
+[node name="Label" type="Label" parent="Sprite3D/SubViewport"]
+offset_right = 40.0
+offset_bottom = 23.0
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("4_t7me3")
+theme_override_font_sizes/font_size = 20
+text = "
+
+
+
+
+
+
+
+
+
+
+
+							Respawn Area"
+horizontal_alignment = 1
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.760291, 0)
+omni_range = 7.31294

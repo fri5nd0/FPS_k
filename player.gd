@@ -52,6 +52,9 @@ func _process(delta):
 				rotate_y(deg_to_rad(-axis_vector.x) * controller_sens)
 				head.rotate_x(deg_to_rad(-axis_vector.y) * controller_sens)
 				head.rotation.x = clamp(head.rotation.x, deg_to_rad(-90), deg_to_rad(90))
+	if health == 0:
+		_after_death()	
+	
 func _input(event):
 	if not is_multiplayer_authority():return
 	if event is InputEventMouseMotion:
@@ -77,7 +80,7 @@ func _physics_process(delta):
 		
 	if Input.is_action_just_pressed('swap'):
 			if holster.get_child_count()>0:
-				swapWeapon()
+				swapWeapon.rpc()
 			
 	if not is_on_floor():
 			gravity_direction += Vector3.DOWN * gravity * delta#Gravity acts vertically, downwards when not on floor
@@ -98,6 +101,8 @@ func _physics_process(delta):
 				direction -= transform.basis.x
 	if Input.is_action_pressed("move_right"):# To the right
 			direction += transform.basis.x
+	if Input.is_action_just_pressed("Test_self_destruct"):
+		health = 0
 				
 	direction = direction.normalized()#prevents player from going faster diagonally
 			
@@ -109,10 +114,9 @@ func _physics_process(delta):
 	set_velocity(movement)
 	set_up_direction(Vector3.UP)
 	move_and_slide() #If the body collides with another, it will slide along the other body rather than stop immediately
-
+@rpc("call_local")
 func add_weapon(weapon_type):
 		if weapons.size()< max_weaps:
-			weapons.append(weapon_type)
 			var weapon_scene = load("res://" + weapon_type + ".tscn")
 			# Check if the weapon scene is already a child of gun or holster
 			if !gun.has_node(weapon_type) and !holster.has_node(weapon_type):
@@ -120,16 +124,21 @@ func add_weapon(weapon_type):
 				if !isGunOccupied:
 					gun.add_child(weapon_instance)
 					isGunOccupied = true
-				elif holster.get_child_count()<= 2:
+					weapons.append(weapon_type)
+				elif holster.get_child_count()< 2:
 					var current_gun = gun.get_child(0)
 					gun.remove_child(current_gun)
 					holster.add_child(current_gun)
 					gun.add_child(weapon_instance)
 					rear_pointer += 1
-				else:
-					print('cant pick up')
+					weapons.append(weapon_type)
+				elif holster.get_child_count()==2:
+					var current_gun = gun.get_child(0)
+					gun.remove_child(current_gun)
+					gun.add_child(weapon_instance)
+					weapons.append(weapon_type)
 
-
+@rpc("call_local")
 func swapWeapon():
 	var holsterWeapons = holster.get_children()
 	var currentGun = gun.get_child(0)
@@ -160,3 +169,30 @@ func getAmmoCountFromCurrentGun() -> int:
 		return gunNode.getAmmoCount()
 	else:
 		return 0
+
+func _after_death():
+	$Respawn_timer.start(1)
+	if gun.get_child_count()!= 0:
+		for child in gun.get_children():
+			gun.remove_child(child)
+		for child in holster.get_children():
+			gun.remove_child(child)
+	transform.origin = Vector3(45.725,34.739,0)
+	await get_tree().create_timer(5).timeout
+	transform.origin = _getSpawnPoint()
+	health = 200
+
+func _getSpawnPoint():
+	var safeSpawn
+	var safeQuad = get_parent().findSafeSpawn()
+	if safeQuad == 1:
+		return Vector3(-15,0,9)
+	if safeQuad == 2:
+		return Vector3(15,0,9)
+	if safeQuad == 3:
+		return Vector3(15,0,-9)
+	if safeQuad == 4:
+		return Vector3(-15,0,-9)
+	else:
+		return Vector3(0,0,0)
+	

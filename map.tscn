@@ -1,13 +1,20 @@
-[gd_scene load_steps=5 format=3 uid="uid://dk6uyot5kcx6r"]
+[gd_scene load_steps=10 format=3 uid="uid://dk6uyot5kcx6r"]
 
 [ext_resource type="Texture2D" uid="uid://c48cowbc7ydjc" path="res://kenney_prototypetextures/PNG/Dark/texture_01.png" id="1_vfgmd"]
 [ext_resource type="Texture2D" uid="uid://blnrymlmc2egk" path="res://kenney_prototypetextures/PNG/Green/texture_02.png" id="2_oufui"]
+[ext_resource type="Script" path="res://Quadrant1.gd" id="3_4f4gi"]
+[ext_resource type="Script" path="res://Quadrant2.gd" id="4_i2tff"]
+[ext_resource type="Script" path="res://Quadrant3.gd" id="5_6slk3"]
+[ext_resource type="Script" path="res://Quadrant4.gd" id="6_vqec1"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a8lvc"]
 albedo_texture = ExtResource("1_vfgmd")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_k5ucp"]
 albedo_texture = ExtResource("2_oufui")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2epor"]
+size = Vector3(18.4559, 2.77996, 12.2523)
 
 [node name="Node3D" type="Node3D"]
 
@@ -55,3 +62,43 @@ shadow_enabled = true
 [node name="DirectionalLight3D4" type="DirectionalLight3D" parent="CSGCombiner3D"]
 transform = Transform3D(-0.0245543, 0.916846, 0.398485, 0, -0.398605, 0.917123, 0.999699, 0.0225193, 0.00978748, 16.8115, 20.3035, 0.0236211)
 shadow_enabled = true
+
+[node name="Quadrant1" type="Area3D" parent="."]
+script = ExtResource("3_4f4gi")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Quadrant1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.58883, 1.45995, 5.87623)
+shape = SubResource("BoxShape3D_2epor")
+
+[node name="Quadrant2" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.5366, 0, 0)
+script = ExtResource("4_i2tff")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Quadrant2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.58883, 1.45995, 5.87623)
+shape = SubResource("BoxShape3D_2epor")
+
+[node name="Quadrant3" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.5366, 0, -12.1692)
+script = ExtResource("5_6slk3")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Quadrant3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.58883, 1.45995, 5.87623)
+shape = SubResource("BoxShape3D_2epor")
+
+[node name="Quadrant4" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0461845, 0, -12.1692)
+script = ExtResource("6_vqec1")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Quadrant4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.58883, 1.45995, 5.87623)
+shape = SubResource("BoxShape3D_2epor")
+
+[connection signal="body_entered" from="Quadrant1" to="Quadrant1" method="_on_body_entered"]
+[connection signal="body_exited" from="Quadrant1" to="Quadrant1" method="_on_body_exited"]
+[connection signal="body_entered" from="Quadrant2" to="Quadrant2" method="_on_body_entered"]
+[connection signal="body_exited" from="Quadrant2" to="Quadrant2" method="_on_body_exited"]
+[connection signal="body_entered" from="Quadrant3" to="Quadrant3" method="_on_body_entered"]
+[connection signal="body_exited" from="Quadrant3" to="Quadrant3" method="_on_body_exited"]
+[connection signal="body_entered" from="Quadrant4" to="Quadrant4" method="_on_body_entered"]
+[connection signal="body_exited" from="Quadrant4" to="Quadrant4" method="_on_body_exited"]

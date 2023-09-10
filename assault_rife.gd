@@ -14,7 +14,7 @@ func _init():
 
 func _ready():
 	$Firerate_timer.one_shot = false
-	
+
 func _fire(aimcast):
 	if ammo > 0:
 		if Input.is_action_pressed("fire"):
@@ -30,7 +30,7 @@ func _process(delta):
 			for body in $Pickup_area.get_overlapping_bodies():
 				if body.is_in_group('Player'):
 					var player = body
-					player.add_weapon(weapon_type)
+					player.add_weapon.rpc(weapon_type)
 					set_physics_process(false)
 					dropped = false
 					queue_free()

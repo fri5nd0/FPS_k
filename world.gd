@@ -2,6 +2,7 @@ extends Node
 
 @onready var menu = $CanvasLayer/MainMenu
 @onready var address = $CanvasLayer/MainMenu/MC/Options/address_input
+@onready var map = $Node3D
 const port = 9999
 const Player = preload("res://player_body.tscn")
 var enet_p = ENetMultiplayerPeer.new()
@@ -23,3 +24,19 @@ func add_player(peer_id):
 	player.name = str(peer_id)
 	add_child(player, true)
  
+func findSafeSpawn():
+	var safeQuadrant: int
+	var Q1 = map.get_node('Quadrant1')
+	var Q2 = map.get_node('Quadrant2')
+	var Q3 = map.get_node('Quadrant3')
+	var Q4 = map.get_node('Quadrant4')
+	var WorstQuadrantCount = max(Q1.PlayersInQuadrant, Q2.PlayersInQuadrant,Q3.PlayersInQuadrant,Q4.PlayersInQuadrant)
+	if Q1.PlayersInQuadrant == WorstQuadrantCount:
+		safeQuadrant = 3
+	if Q2.PlayersInQuadrant == WorstQuadrantCount:
+		safeQuadrant = 4
+	if Q3.PlayersInQuadrant == WorstQuadrantCount:
+		safeQuadrant = 1
+	if Q4.PlayersInQuadrant == WorstQuadrantCount:
+		safeQuadrant = 2
+	return safeQuadrant

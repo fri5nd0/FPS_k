@@ -28,7 +28,7 @@ func _process(delta):
 			for body in $PickUpArea.get_overlapping_bodies():
 				if body.is_in_group('Player'):
 					var player = body
-					player.add_weapon(weapon_type)
+					player.add_weapon.rpc(weapon_type)
 					set_physics_process(false)
 					dropped = false
 					queue_free()

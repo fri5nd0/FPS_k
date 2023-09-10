@@ -67,6 +67,7 @@ fov = 110.5
 [node name="RayCast3D" type="RayCast3D" parent="Head/Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.428659)
 target_position = Vector3(0, 0, -1000)
+collision_mask = 15
 
 [node name="TextureRect" type="TextureRect" parent="Head/Camera3D"]
 anchors_preset = 8
@@ -107,3 +108,5 @@ target_position = Vector3(0, -1.5, 0)
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_ew4hc")
+
+[node name="Respawn_timer" type="Timer" parent="."]

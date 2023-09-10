@@ -13,7 +13,6 @@ radius = 0.098471
 height = 0.255437
 
 [node name="CharacterBody3D" type="RigidBody3D"]
-gravity_scale = 0.01
 script = ExtResource("1_tbc7e")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]

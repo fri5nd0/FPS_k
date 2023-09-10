@@ -6,20 +6,20 @@ func _init():
 	ammo = 30
 	damage = 100
 	dropped = true
- 
+@rpc("any_peer")
 func _fire(aimcast):
 	if ammo> 0:
 		if Input.is_action_just_pressed("fire"):
 			hitscan_fire(aimcast)
 	
-
+@rpc("call_local")
 func _process(delta: float) -> void:
 	if dropped == true:
 		if Input.is_action_just_pressed("interact"):
 			for body in $HW_pickup_area.get_overlapping_bodies():
 				if body.is_in_group('Player'):
 					var player = body
-					player.add_weapon(weapon_type)
+					player.add_weapon.rpc(weapon_type)
 					set_physics_process(false)
 					dropped = false
 					queue_free()

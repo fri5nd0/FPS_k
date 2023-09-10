@@ -6,11 +6,11 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_rvv8b"]
 size = Vector3(0.334433, 0.257202, 2.51046)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sj6uw"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_oqbr7"]
 albedo_texture = ExtResource("1_7mx70")
 
 [sub_resource type="PrismMesh" id="PrismMesh_6vlqc"]
-material = SubResource("StandardMaterial3D_sj6uw")
+material = SubResource("StandardMaterial3D_oqbr7")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_px3rf"]
 size = Vector3(7.26559, 1, 5.71806)

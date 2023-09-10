@@ -21,7 +21,7 @@ func _process(delta):
 			for body in $PW_pickup_area.get_overlapping_bodies():
 				if body.is_in_group('Player'):
 					var player = body
-					player.add_weapon(weapon_type)
+					player.add_weapon.rpc(weapon_type)
 					set_physics_process(false)
 					dropped = false
 					queue_free()
@@ -29,7 +29,6 @@ func _fire(aimcast):
 	if  ammo > 0:
 		projectile_fire(aimcast)
 		ammo -= 1
-
 
 func projectile_fire(aimcast):
 	var Projectile = preload("res://Projectile.tscn")

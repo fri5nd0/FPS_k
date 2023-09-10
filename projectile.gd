@@ -12,11 +12,11 @@ func _ready():
 
 func _physics_process(delta):
 	if shoot:
-		_apply_forward_impulse()
+		_apply_forward_impulse(speed)
 		#_decelerate()
 		#_apply_gravity()
 
-func _apply_forward_impulse():
+func _apply_forward_impulse(speed):
 	var forward_impulse = transform.basis.z * speed
 	apply_impulse(-transform.basis.z, forward_impulse)
 

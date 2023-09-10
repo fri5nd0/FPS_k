@@ -1,0 +1,38 @@
+[gd_scene load_steps=7 format=3 uid="uid://ua6xbfhlnb7y"]
+
+[ext_resource type="Script" path="res://grenade_launcher.gd" id="1_6bohh"]
+[ext_resource type="Texture2D" uid="uid://dwyxc2qpjlaxp" path="res://kenney_prototypetextures/PNG/Orange/texture_11.png" id="2_ub42j"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_dqbgk"]
+size = Vector3(0.334433, 0.257202, 2.51046)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ovj1g"]
+albedo_texture = ExtResource("2_ub42j")
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_x0v4x"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pww1r"]
+size = Vector3(7.26559, 1, 5.71806)
+
+[node name="grenade_launcher" type="RigidBody3D"]
+collision_layer = 2
+freeze = true
+script = ExtResource("1_6bohh")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00733495, -0.00695134, -0.00397944)
+shape = SubResource("BoxShape3D_dqbgk")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.294134, 0, 0, 0, 0.19663, 0, 0, 0, 2.45459, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_ovj1g")
+mesh = SubResource("CapsuleMesh_x0v4x")
+
+[node name="PW_pickup_area" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PW_pickup_area"]
+visible = false
+shape = SubResource("BoxShape3D_pww1r")
+
+[node name="Muzzle" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.4438)
