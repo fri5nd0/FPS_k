@@ -39,5 +39,9 @@ text = "Resume Game"
 layout_mode = 2
 text = "Quit"
 
+[node name="SettingsB" type="Button" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Settings"
+
 [connection signal="pressed" from="CenterContainer/VBoxContainer/ResumeB" to="." method="_on_ResumeB_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/QuitB" to="." method="_on_QuitB_pressed"]

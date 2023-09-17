@@ -4,7 +4,6 @@ class_name Sniper
 
 var can_fire := true
 var fire_cooldown := 1
-
 func _init():
 	ammo = 10
 	damage = 200
@@ -18,11 +17,12 @@ func _fire(aimcast):
 			super.hitscan_fire(aimcast)
 			can_fire = false
 			$Timer.start(fire_cooldown)
-
 func _ready():
 	pass
 
 func _process(delta):
+	pickupWeapon()
+func pickupWeapon():
 	if dropped == true:
 		if Input.is_action_just_pressed("interact"):
 			for body in $PickUpArea.get_overlapping_bodies():
@@ -32,9 +32,6 @@ func _process(delta):
 					set_physics_process(false)
 					dropped = false
 					queue_free()
-
-
-
 
 func _on_timer_timeout():
 	can_fire = true

@@ -1,5 +1,5 @@
 extends Node
-
+var scoreboard = {}
 @onready var menu = $CanvasLayer/MainMenu
 @onready var address = $CanvasLayer/MainMenu/MC/Options/address_input
 @onready var map = $Node3D
@@ -22,7 +22,10 @@ func _on_join_b_pressed():
 func add_player(peer_id):
 	var player = Player.instantiate()
 	player.name = str(peer_id)
+	player.game_name = $CanvasLayer/MainMenu/MC/Options/LineEdit.text
+	scoreboard[str(peer_id)] = 0
 	add_child(player, true)
+	print(scoreboard)
  
 func findSafeSpawn():
 	var safeQuadrant: int
@@ -40,3 +43,21 @@ func findSafeSpawn():
 	if Q4.PlayersInQuadrant == WorstQuadrantCount:
 		safeQuadrant = 2
 	return safeQuadrant
+
+func checkForPlayer(opponent):
+	if scoreboard.has(opponent):
+		return true
+@rpc("any_peer")
+func changeScore(PlayerName):
+	var player_index = getPlayerIndex(PlayerName)
+	var currentScore = scoreboard[player_index]
+	currentScore += 1
+	scoreboard[player_index] = currentScore
+	print(scoreboard)
+
+func getPlayerIndex(Pname):
+	var index = 0
+	for key in scoreboard.keys():
+		if key == Pname:
+			return index
+		index += 1

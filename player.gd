@@ -1,7 +1,9 @@
 extends CharacterBody3D
 
 class_name  Player
-
+signal killed_by(opponent_game_name)
+var death_count =0
+var kill_count = 0
 var health = 200
 var speed = 10
 var direction = Vector3() # to represent positions in 3D space 
@@ -17,7 +19,9 @@ var h_accel = 6
 var h_vel = Vector3()
 var controller_sens = 1
 var weapons =[]
-var weapon_dropped 
+var lastshotby : String
+var weapon_dropped
+var game_name 
 @onready var gun = $"Head/Gun"
 @onready var head = $Head #uses the spatial node 'Head'
 @onready var an_pl = $AnimationPlayer
@@ -53,7 +57,7 @@ func _process(delta):
 				head.rotate_x(deg_to_rad(-axis_vector.y) * controller_sens)
 				head.rotation.x = clamp(head.rotation.x, deg_to_rad(-90), deg_to_rad(90))
 	if health == 0:
-		_after_death()	
+		_after_death.rpc()	
 	
 func _input(event):
 	if not is_multiplayer_authority():return
@@ -65,7 +69,6 @@ func _unhandled_input(event):
 	if not is_multiplayer_authority():return
 	if event.is_action_pressed("Pause"):
 			Pause.is_paused = !Pause.is_paused
-		
 func _physics_process(delta):
 	if not is_multiplayer_authority():return
 					
@@ -169,30 +172,38 @@ func getAmmoCountFromCurrentGun() -> int:
 		return gunNode.getAmmoCount()
 	else:
 		return 0
-
+@rpc("call_local")
 func _after_death():
-	$Respawn_timer.start(1)
+	death_count +=1
 	if gun.get_child_count()!= 0:
 		for child in gun.get_children():
 			gun.remove_child(child)
 		for child in holster.get_children():
-			gun.remove_child(child)
+			holster.remove_child(child)
 	transform.origin = Vector3(45.725,34.739,0)
 	await get_tree().create_timer(5).timeout
+	get_parent().changeScore.rpc(lastshotby)
 	transform.origin = _getSpawnPoint()
 	health = 200
-
+	
 func _getSpawnPoint():
 	var safeSpawn
 	var safeQuad = get_parent().findSafeSpawn()
 	if safeQuad == 1:
-		return Vector3(-15,0,9)
+		return Vector3(-15,1,9)
 	if safeQuad == 2:
-		return Vector3(15,0,9)
+		return Vector3(15,1,9)
 	if safeQuad == 3:
-		return Vector3(15,0,-9)
+		return Vector3(15,1,-9)
 	if safeQuad == 4:
-		return Vector3(-15,0,-9)
+		return Vector3(-15,1,-9)
 	else:
 		return Vector3(0,0,0)
-	
+
+@rpc("any_peer")
+func _recieveDamage(damage):
+	health -= damage
+
+func doDamage(damage):
+	_recieveDamage.rpc(damage)
+

@@ -62,6 +62,11 @@ layout_mode = 2
 placeholder_text = "Enter Address"
 alignment = 1
 
+[node name="LineEdit" type="LineEdit" parent="CanvasLayer/MainMenu/MC/Options"]
+layout_mode = 2
+placeholder_text = "Enter Name"
+alignment = 1
+
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("res://player_body.tscn")
 spawn_path = NodePath("..")

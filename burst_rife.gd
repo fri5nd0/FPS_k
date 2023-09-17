@@ -29,6 +29,7 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
+@rpc("any_peer")
 func _process(delta):
 	if dropped == true:
 		if Input.is_action_just_pressed("interact"):

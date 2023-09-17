@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://bl28iy0ygoqby"]
+[gd_scene load_steps=7 format=3 uid="uid://bl28iy0ygoqby"]
 
 [ext_resource type="Script" path="res://grenade.gd" id="1_6gl1i"]
 [ext_resource type="Texture2D" uid="uid://cn51c74gqojj5" path="res://kenney_prototypetextures/PNG/Green/texture_03.png" id="1_mdqt6"]
@@ -12,8 +12,11 @@ albedo_texture = ExtResource("1_mdqt6")
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_vhcs2"]
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_4urn8"]
+radius = 1.83619
+
 [node name="RigidBody3D" type="RigidBody3D"]
-sleeping = true
+collision_layer = 15
 script = ExtResource("1_6gl1i")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -25,5 +28,12 @@ material_override = SubResource("StandardMaterial3D_s341a")
 mesh = SubResource("CapsuleMesh_vhcs2")
 
 [node name="Blast_timer" type="Timer" parent="."]
+
+[node name="BlastSphere" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BlastSphere"]
+shape = SubResource("SphereShape3D_4urn8")
+
+[node name="damageCheck" type="RayCast3D" parent="."]
 
 [connection signal="timeout" from="Blast_timer" to="." method="_on_blast_timer_timeout"]

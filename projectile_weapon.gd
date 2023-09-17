@@ -30,6 +30,7 @@ func _fire(aimcast):
 		projectile_fire(aimcast)
 		ammo -= 1
 
+
 func projectile_fire(aimcast):
 	var Projectile = preload("res://Projectile.tscn")
 	if aimcast.is_colliding():
@@ -38,6 +39,7 @@ func projectile_fire(aimcast):
 		muzzle.add_child(projectile)
 		projectile.look_at(aimcast.get_collision_point(), Vector3.UP)
 		projectile.shoot = true
+		
 
 func getAmmoCount():
 	return ammo
