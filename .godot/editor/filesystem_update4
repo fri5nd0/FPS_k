@@ -1,6 +1,6 @@
 res://PauseMenu.tscn
 res://player.gd
-res://world.gd
+res://PlayerUI.gd
 res://hitscangun.tscn
 res://assault_rife.tscn
 res://sniper.tscn

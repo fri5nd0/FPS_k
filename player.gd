@@ -49,6 +49,8 @@ func _process(delta):
 	ammocount = getAmmoCountFromCurrentGun()
 	print(ammocount)
 	player_ui.updateAmmoCount(ammocount)
+	player_ui.playerName(name)
+	player_ui.lastShotbyLabel(lastshotby)
 	var axis_vector = Vector2()
 	axis_vector.x = Input.get_action_strength("look_right") - Input.get_action_strength("look_left")
 	axis_vector.y = Input.get_action_strength("look_down") - Input.get_action_strength("look_up")
@@ -181,8 +183,9 @@ func _after_death():
 		for child in holster.get_children():
 			holster.remove_child(child)
 	transform.origin = Vector3(45.725,34.739,0)
+	killed_by.emit(lastshotby)
 	await get_tree().create_timer(5).timeout
-	get_parent().changeScore.rpc(lastshotby)
+	#get_parent().changeScore.rpc(lastshotby)
 	transform.origin = _getSpawnPoint()
 	health = 200
 	
