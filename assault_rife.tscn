@@ -19,6 +19,7 @@ size = Vector3(4.52513, 0.363381, 4.52296)
 collision_layer = 2
 freeze = true
 script = ExtResource("1_ar156")
+weapon_type = null
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.124289, 0.0708292, -0.0155434, -0.0103745, -0.0786522, -0.154514, -0.0169181, 0.568576, -0.0194381, -0.00474036, -0.00384891, -0.00975357)

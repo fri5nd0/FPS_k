@@ -1,6 +1,5 @@
 res://PauseMenu.tscn
-res://player.gd
-res://PlayerUI.gd
+res://world.gd
 res://hitscangun.tscn
 res://assault_rife.tscn
 res://sniper.tscn
@@ -14,5 +13,6 @@ res://grenadee.tscn
 res://grenade_launcher.tscn
 res://respawn_area.tscn
 res://map.tscn
-res://player_body.tscn
 res://scoreboard.tscn
+res://player_body.tscn
+res://player.gd

@@ -11,10 +11,10 @@ func _init():
 	dropped = true
 	weapon_type = 'sniper'
 	
-func _fire(aimcast):
+func _fire(aimcast,Sname):
 	if ammo > 0 and can_fire:
 		if Input.is_action_just_pressed("fire"):
-			super.hitscan_fire(aimcast)
+			super.hitscan_fire(aimcast,Sname)
 			can_fire = false
 			$Timer.start(fire_cooldown)
 func _ready():

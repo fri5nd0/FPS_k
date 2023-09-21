@@ -1,8 +1,9 @@
-[gd_scene load_steps=12 format=3 uid="uid://d00qoqxrcx3tv"]
+[gd_scene load_steps=13 format=3 uid="uid://d00qoqxrcx3tv"]
 
 [ext_resource type="Script" path="res://player.gd" id="1_cuyu6"]
 [ext_resource type="Texture2D" uid="uid://b6xdlxyqt78xp" path="res://reticle.png" id="2_4km0b"]
 [ext_resource type="PackedScene" uid="uid://c1jai0037ps1r" path="res://PauseMenu.tscn" id="3_8h1fn"]
+[ext_resource type="Script" path="res://Gun.gd" id="3_egh50"]
 [ext_resource type="PackedScene" uid="uid://dmbbp2ldxcgkt" path="res://canvas_layer.tscn" id="4_g0iv0"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_1ax3j"]
@@ -86,8 +87,16 @@ size_flags_vertical = 4
 texture = ExtResource("2_4km0b")
 metadata/_edit_use_anchors_ = true
 
+[node name="ReticleAdhesionRaycast" type="RayCast3D" parent="Head/Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.016175, 0, -0.30512)
+target_position = Vector3(0, 0, -100)
+collision_mask = 3840
+collide_with_areas = true
+collide_with_bodies = false
+
 [node name="Gun" type="Node3D" parent="Head"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.452697, -0.109354, -0.261941)
+script = ExtResource("3_egh50")
 
 [node name="Holster" type="Node3D" parent="Head"]
 transform = Transform3D(1, 0, 0, 0, -0.00218166, -0.999998, 0, 0.999997, -0.00218168, 0.346558, -0.473131, 0.590398)

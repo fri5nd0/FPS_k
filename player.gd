@@ -19,7 +19,7 @@ var h_accel = 6
 var h_vel = Vector3()
 var controller_sens = 1
 var weapons =[]
-var lastshotby : String
+var lastshotby :String
 var weapon_dropped
 var game_name 
 @onready var gun = $"Head/Gun"
@@ -31,6 +31,7 @@ var game_name
 @onready var ground_check =$GroundCheck#Uses the ground check raycast node
 @onready var player_ui = $CanvasLayer
 @onready var holster = $Head/Holster
+@onready var AdhesionRay = $Head/Camera3D/ReticleAdhesionRaycast
 var weapon_picked
 var max_weaps = 3
 var ammocount
@@ -47,7 +48,6 @@ func _ready():
 func _process(delta):
 	if not is_multiplayer_authority(): return
 	ammocount = getAmmoCountFromCurrentGun()
-	print(ammocount)
 	player_ui.updateAmmoCount(ammocount)
 	player_ui.playerName(name)
 	player_ui.lastShotbyLabel(lastshotby)
@@ -58,6 +58,10 @@ func _process(delta):
 				rotate_y(deg_to_rad(-axis_vector.x) * controller_sens)
 				head.rotate_x(deg_to_rad(-axis_vector.y) * controller_sens)
 				head.rotation.x = clamp(head.rotation.x, deg_to_rad(-90), deg_to_rad(90))
+				if aimcast.is_colliding():
+					var body = aimcast.get_collider()
+					if body.is_in_group('Player'):
+						reticleFriction(0.4,axis_vector.x,axis_vector.y)
 	if health == 0:
 		_after_death.rpc()	
 	
@@ -77,7 +81,7 @@ func _physics_process(delta):
 	if gun.get_child_count() > 0:
 			var in_hand = gun.get_child(0)
 			if Input.is_action_just_pressed("fire"):#checks if moouse button is clicked
-				in_hand._fire(aimcast)
+				in_hand._fire(aimcast,name)
 			
 	direction = Vector3()
 			
@@ -185,7 +189,7 @@ func _after_death():
 	transform.origin = Vector3(45.725,34.739,0)
 	killed_by.emit(lastshotby)
 	await get_tree().create_timer(5).timeout
-	#get_parent().changeScore.rpc(lastshotby)
+	get_parent().changeScore.rpc(lastshotby)
 	transform.origin = _getSpawnPoint()
 	health = 200
 	
@@ -207,6 +211,12 @@ func _getSpawnPoint():
 func _recieveDamage(damage):
 	health -= damage
 
-func doDamage(damage):
+func doDamage(damage,lsb):
 	_recieveDamage.rpc(damage)
+	lastshotby = lsb
+	player_ui.lastShotbyLabel(lastshotby)
 
+func reticleFriction(friction_value,x,y):
+	rotate_y(deg_to_rad(-x) * controller_sens*friction_value)
+	head.rotate_x(deg_to_rad(-y) * controller_sens*friction_value)
+	head.rotation.x = clamp(head.rotation.x, deg_to_rad(-90), deg_to_rad(90))

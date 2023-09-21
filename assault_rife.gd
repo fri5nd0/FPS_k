@@ -15,12 +15,12 @@ func _init():
 func _ready():
 	$Firerate_timer.one_shot = false
 
-func _fire(aimcast):
+func _fire(aimcast,Sname):
 	if ammo > 0:
 		if Input.is_action_pressed("fire"):
 			if !is_firing:
 				is_firing = true
-				hitscan_fire(aimcast)
+				hitscan_fire(aimcast,Sname)
 				$Firerate_timer.start(shot_delay)
 
 

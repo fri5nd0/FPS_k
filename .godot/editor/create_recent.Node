@@ -1,3 +1,6 @@
+CollisionShape3D
+Area3D
+RayCast3D
 Label
 SubViewport
 Sprite3D
@@ -5,9 +8,6 @@ Node3D
 VBoxContainer
 LineEdit
 Button
-RayCast3D
-CollisionShape3D
-Area3D
 Timer
 OmniLight3D
 DirectionalLight3D

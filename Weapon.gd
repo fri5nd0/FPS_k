@@ -7,5 +7,5 @@ var firerate: int
 var ammo:int
 var rounds:int
 var dropped:bool
-
+var ShooterName
 			

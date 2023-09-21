@@ -12,17 +12,18 @@ func _on_host_b_pressed():
 	enet_p.create_server(port)
 	multiplayer.multiplayer_peer = enet_p
 	multiplayer.peer_connected.connect(add_player)
-	add_player(multiplayer.get_unique_id())
+	add_player.rpc(multiplayer.get_unique_id())
 
 func _on_join_b_pressed():
 	menu.hide()
 	enet_p.create_client('localhost',port)
 	multiplayer.multiplayer_peer = enet_p
-	
+
+@rpc("call_local")	
 func add_player(peer_id):
 	var player = Player.instantiate()
 	player.name = str(peer_id)
-	player.game_name = $CanvasLayer/MainMenu/MC/Options/LineEdit.text
+#	player.game_name = $CanvasLayer/MainMenu/MC/Options/LineEdit.text
 	scoreboard[str(peer_id)] = 0
 	add_child(player, true)
 	print(scoreboard)
@@ -50,19 +51,18 @@ func checkForPlayer(opponent):
 @rpc("any_peer")
 func changeScore(PlayerName):
 	
-	var player_index = getPlayerIndex(PlayerName)
-	var currentScore = scoreboard[str(PlayerName)]
+#	var player_index = getPlayerIndex(str(PlayerName))
+	var currentScore = scoreboard[PlayerName]
 	currentScore += 1
 	scoreboard[PlayerName] += 1
 	print(scoreboard)
 
 func getPlayerIndex(Pname):
 	var index = 0
-	for key in scoreboard:
+	for key in scoreboard.keys():
 		if key == Pname:
 			return index
 		index += 1
-		
 	
 func wPrint(x):
 	print(str(x))
