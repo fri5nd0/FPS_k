@@ -6,28 +6,32 @@ var scoreboard = {}
 const port = 9999
 const Player = preload("res://player_body.tscn")
 var enet_p = ENetMultiplayerPeer.new()
-
+var players = []
 func _on_host_b_pressed():
 	menu.hide()
 	enet_p.create_server(port)
 	multiplayer.multiplayer_peer = enet_p
 	multiplayer.peer_connected.connect(add_player)
-	add_player.rpc(multiplayer.get_unique_id())
+	add_player(1)
 
 func _on_join_b_pressed():
 	menu.hide()
 	enet_p.create_client('localhost',port)
 	multiplayer.multiplayer_peer = enet_p
+#	add_player(1)
 
-@rpc("call_local")	
+@rpc("call_remote")	
 func add_player(peer_id):
-	var player = Player.instantiate()
-	player.name = str(peer_id)
+	if enet_p.get_unique_id() == 1:
+		add_player.rpc(peer_id)
+		var player = Player.instantiate()
+		player.name = str(peer_id)
 #	player.game_name = $CanvasLayer/MainMenu/MC/Options/LineEdit.text
+		add_child(player, true)
+		for p in scoreboard.keys():
+			add_player.rpc_id(peer_id, int(p))
 	scoreboard[str(peer_id)] = 0
-	add_child(player, true)
 	print(scoreboard)
- 
 func findSafeSpawn():
 	var safeQuadrant: int
 	var Q1 = map.get_node('Quadrant1')
@@ -50,13 +54,14 @@ func checkForPlayer(opponent):
 		return true
 @rpc("call_local")
 func changeScore(PlayerName:String):
-	print(scoreboard.has(str(PlayerName)))
-	print("A: %s" % scoreboard.has(PlayerName))
-	print("B: %s" % scoreboard.has(str(PlayerName)))
-	var currentScore = scoreboard[PlayerName]
-	currentScore += 1
-	scoreboard[PlayerName] += 1
-	print(scoreboard)
+	if PlayerName != '':
+		print(scoreboard.has(str(PlayerName)))
+		print("A: %s" % scoreboard.has(PlayerName))
+		print("B: %s" % scoreboard.has(str(PlayerName)))
+		var currentScore = scoreboard[PlayerName]
+		currentScore += 1
+		scoreboard[PlayerName] += 1
+		print(scoreboard)
 
 func getPlayerIndex(Pname):
 	var index = 0
