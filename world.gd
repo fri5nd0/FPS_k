@@ -51,8 +51,8 @@ func checkForPlayer(opponent):
 @rpc("any_peer")
 func changeScore(PlayerName):
 	
-#	var player_index = getPlayerIndex(str(PlayerName))
-	var currentScore = scoreboard[PlayerName]
+	var player_index = getPlayerIndex(str(PlayerName))
+	var currentScore = scoreboard[player_index]
 	currentScore += 1
 	scoreboard[PlayerName] += 1
 	print(scoreboard)

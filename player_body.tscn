@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://d00qoqxrcx3tv"]
+[gd_scene load_steps=14 format=3 uid="uid://d00qoqxrcx3tv"]
 
 [ext_resource type="Script" path="res://player.gd" id="1_cuyu6"]
 [ext_resource type="Texture2D" uid="uid://b6xdlxyqt78xp" path="res://reticle.png" id="2_4km0b"]
@@ -38,6 +38,9 @@ properties/1/sync = true
 properties/2/path = NodePath("Head/Camera3D:rotation")
 properties/2/spawn = true
 properties/2/sync = true
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_8upf2"]
+radius = 1.91958
 
 [node name="PlayerBody" type="CharacterBody3D" groups=["Player"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.181837, -0.0465543, -0.0464864)
@@ -119,3 +122,10 @@ target_position = Vector3(0, -1.5, 0)
 replication_config = SubResource("SceneReplicationConfig_ew4hc")
 
 [node name="Respawn_timer" type="Timer" parent="."]
+
+[node name="AdhesionArea" type="Area3D" parent="." groups=["AdhesionArea"]]
+collision_layer = 3840
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="AdhesionArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.689698, 0)
+shape = SubResource("SphereShape3D_8upf2")

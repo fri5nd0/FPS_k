@@ -62,6 +62,10 @@ func _process(delta):
 					var body = aimcast.get_collider()
 					if body.is_in_group('Player'):
 						reticleFriction(0.4,axis_vector.x,axis_vector.y)
+#				if AdhesionRay.is_colliding():
+#					var StickyArea = AdhesionRay.get_collider()
+#					if StickyArea.is_in_group('AdhesionArea'):
+#						ApplyReticleAdhesion(StickyArea)
 	if health == 0:
 		_after_death.rpc()	
 	
@@ -213,10 +217,21 @@ func _recieveDamage(damage):
 
 func doDamage(damage,lsb):
 	_recieveDamage.rpc(damage)
-	lastshotby = lsb
-	player_ui.lastShotbyLabel(lastshotby)
+	setlastshotby(lsb)
 
 func reticleFriction(friction_value,x,y):
 	rotate_y(deg_to_rad(-x) * controller_sens*friction_value)
 	head.rotate_x(deg_to_rad(-y) * controller_sens*friction_value)
 	head.rotation.x = clamp(head.rotation.x, deg_to_rad(-90), deg_to_rad(90))
+
+
+func setlastshotby(lsb):
+	lastshotby = lsb
+	player_ui.lastShotbyLabel(lastshotby)
+
+func ApplyReticleAdhesion(StickyArea):
+	var target_direction = (StickyArea.global_transform.origin - aimcast.global_transform.origin).normalized()
+	var adhesion_x = rad_to_deg(atan2(-target_direction.y, target_direction.z))
+	var adhesion_y = rad_to_deg(atan2(target_direction.x, target_direction.z))
+	head.rotation.x = deg_to_rad(-adhesion_x)
+	rotate_y(deg_to_rad(adhesion_y))
