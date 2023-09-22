@@ -20,3 +20,6 @@ func playerName(p):
 
 func lastShotbyLabel(p):
 	Lastshot.text = str(p)
+
+func healthLabel(p):
+	$VBoxContainer/Label5.text = str(p)

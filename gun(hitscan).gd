@@ -31,7 +31,7 @@ func hitscan_fire(aimcast,Sname):
 			var target = aimcast.get_collider()
 			if target.is_in_group("Player"):#checks if the collision is with a object that is in the group 'enemy'
 					print("hit enemy")#just so we know the ray cast is colliding(for test)
-					target.doDamage(damage,Sname)#reduces player health
+					target.doDamage.rpc_id(target.get_multiplayer_authority(),damage,Sname)#reduces player health
 			ammo = ammo - 1
 		else:
 			ammo = ammo -1

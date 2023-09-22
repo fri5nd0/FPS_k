@@ -48,11 +48,12 @@ func findSafeSpawn():
 func checkForPlayer(opponent):
 	if scoreboard.has(opponent):
 		return true
-@rpc("any_peer")
-func changeScore(PlayerName):
-	
-	var player_index = getPlayerIndex(str(PlayerName))
-	var currentScore = scoreboard[player_index]
+@rpc("call_local")
+func changeScore(PlayerName:String):
+	print(scoreboard.has(str(PlayerName)))
+	print("A: %s" % scoreboard.has(PlayerName))
+	print("B: %s" % scoreboard.has(str(PlayerName)))
+	var currentScore = scoreboard[PlayerName]
 	currentScore += 1
 	scoreboard[PlayerName] += 1
 	print(scoreboard)

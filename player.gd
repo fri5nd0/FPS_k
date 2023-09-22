@@ -22,6 +22,7 @@ var weapons =[]
 var lastshotby :String
 var weapon_dropped
 var game_name 
+var is_dead = false
 @onready var gun = $"Head/Gun"
 @onready var head = $Head #uses the spatial node 'Head'
 @onready var an_pl = $AnimationPlayer
@@ -51,6 +52,7 @@ func _process(delta):
 	player_ui.updateAmmoCount(ammocount)
 	player_ui.playerName(name)
 	player_ui.lastShotbyLabel(lastshotby)
+	player_ui.healthLabel(health)
 	var axis_vector = Vector2()
 	axis_vector.x = Input.get_action_strength("look_right") - Input.get_action_strength("look_left")
 	axis_vector.y = Input.get_action_strength("look_down") - Input.get_action_strength("look_up")
@@ -66,9 +68,9 @@ func _process(delta):
 #					var StickyArea = AdhesionRay.get_collider()
 #					if StickyArea.is_in_group('AdhesionArea'):
 #						ApplyReticleAdhesion(StickyArea)
-	if health == 0:
+	if health <= 0 and is_dead== false:
 		_after_death.rpc()	
-	
+		is_dead = true
 func _input(event):
 	if not is_multiplayer_authority():return
 	if event is InputEventMouseMotion:
@@ -194,6 +196,7 @@ func _after_death():
 	killed_by.emit(lastshotby)
 	await get_tree().create_timer(5).timeout
 	get_parent().changeScore.rpc(lastshotby)
+	is_dead = false
 	transform.origin = _getSpawnPoint()
 	health = 200
 	
@@ -211,12 +214,11 @@ func _getSpawnPoint():
 	else:
 		return Vector3(0,0,0)
 
-@rpc("any_peer")
 func _recieveDamage(damage):
 	health -= damage
-
+@rpc('any_peer')
 func doDamage(damage,lsb):
-	_recieveDamage.rpc(damage)
+	_recieveDamage(damage)
 	setlastshotby(lsb)
 
 func reticleFriction(friction_value,x,y):
