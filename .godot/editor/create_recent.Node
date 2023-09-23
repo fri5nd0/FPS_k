@@ -1,4 +1,6 @@
 Label
+GridContainer
+MultiplayerSynchronizer
 CollisionShape3D
 Area3D
 RayCast3D
@@ -14,7 +16,6 @@ DirectionalLight3D
 CSGBox3D
 RigidBody3D
 MeshInstance3D
-MultiplayerSynchronizer
 CharacterBody3D
 CanvasLayer
 CenterContainer

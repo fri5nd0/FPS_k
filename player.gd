@@ -187,6 +187,7 @@ func getAmmoCountFromCurrentGun() -> int:
 @rpc("call_local")
 func _after_death():
 	death_count +=1
+	get_parent().changeScore.rpc(lastshotby, name)
 	if gun.get_child_count()!= 0:
 		for child in gun.get_children():
 			gun.remove_child(child)
@@ -195,7 +196,6 @@ func _after_death():
 	transform.origin = Vector3(45.725,34.739,0)
 	killed_by.emit(lastshotby)
 	await get_tree().create_timer(5).timeout
-	get_parent().changeScore.rpc(lastshotby)
 	is_dead = false
 	transform.origin = _getSpawnPoint()
 	health = 200

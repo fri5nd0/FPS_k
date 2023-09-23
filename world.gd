@@ -20,7 +20,7 @@ func _on_join_b_pressed():
 	multiplayer.multiplayer_peer = enet_p
 #	add_player(1)
 
-@rpc("call_remote")	
+@rpc("any_peer")	
 func add_player(peer_id):
 	if enet_p.get_unique_id() == 1:
 		add_player.rpc(peer_id)
@@ -52,16 +52,15 @@ func findSafeSpawn():
 func checkForPlayer(opponent):
 	if scoreboard.has(opponent):
 		return true
-@rpc("call_local")
-func changeScore(PlayerName:String):
+@rpc("any_peer","call_local")
+func changeScore(PlayerName:String, shotname):
 	if PlayerName != '':
-		print(scoreboard.has(str(PlayerName)))
-		print("A: %s" % scoreboard.has(PlayerName))
-		print("B: %s" % scoreboard.has(str(PlayerName)))
 		var currentScore = scoreboard[PlayerName]
 		currentScore += 1
 		scoreboard[PlayerName] += 1
+		print('Scoreboard of:'+ shotname)
 		print(scoreboard)
+		
 
 func getPlayerIndex(Pname):
 	var index = 0
@@ -72,3 +71,6 @@ func getPlayerIndex(Pname):
 	
 func wPrint(x):
 	print(str(x))
+
+func getScoreboard():
+	return scoreboard
