@@ -1,4 +1,5 @@
 res://PauseMenu.tscn
+res://world.gd
 res://hitscangun.tscn
 res://assault_rife.tscn
 res://sniper.tscn
@@ -14,6 +15,4 @@ res://respawn_area.tscn
 res://map.tscn
 res://scoreboard.tscn
 res://player_body.tscn
-res://PlayerUI.gd
-res://world.gd
-res://player.gd
+res://ai_body.tscn

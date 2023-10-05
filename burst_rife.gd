@@ -13,7 +13,13 @@ func _init():
 	weapon_type = 'burst_rife'
 	delay_time = 0.5/firerate
 	dropped = true
+	rounds = 3
+	ammoRounds = ammo*rounds
 	# Called when the node enters the scene tree for the first time.
+
+func _input(event):
+	if Input.is_action_just_pressed('reload'):
+		reload(36)
 	
 func _fire(aimcast,Sname):
 	if ammo>0:

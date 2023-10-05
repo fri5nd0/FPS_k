@@ -1,7 +1,7 @@
 extends Projectile
 
 class_name Grenade
-
+var isMoving = true
 var readyToBlast = false
 @onready var blastTimer = $Blast_timer
 @onready var damageCheck = $damageCheck
@@ -18,7 +18,8 @@ func _process(delta):
 
 func _physics_process(delta):
 	if readyToBlast:
-		_apply_forward_impulse()
+		if isMoving == true:
+			_apply_forward_impulse()
 		_Blast()
 func _Blast():
 	await get_tree().create_timer(5).timeout
@@ -34,9 +35,6 @@ func _Blast():
 				else:
 					pass
 					
-func _apply_forward_impulse():
-	var forward_direction = -transform.basis.z  # Opposite of the forward direction
-	var forward_velocity = forward_direction * speed
-	var upward_velocity = Vector3(0, 1, 0) * speed  # Adjust the Y value for the desired arc height
-	var total_velocity = forward_velocity + upward_velocity
-	apply_impulse(Vector3.ZERO, total_velocity)
+
+func _on_collision_area_body_entered(body):
+	isMoving !=isMoving

@@ -10,10 +10,14 @@ var weapon_type = 'projectile_weapon'
 func _init():
 	ammo = 20
 	dropped = true
+	rounds = 1
+	ammoRounds = ammo*rounds
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass
-
+func _input(event):
+	if Input.is_action_just_pressed('reload'):
+		reload(20)
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if dropped == true:
@@ -25,13 +29,12 @@ func _process(delta):
 					set_physics_process(false)
 					dropped = false
 					queue_free()
-func _fire(aimcast):
+func _fire(aimcast, Sname):
 	if  ammo > 0:
-		projectile_fire(aimcast)
+		projectile_fire(aimcast,Sname)
 		ammo -= 1
 
-
-func projectile_fire(aimcast):
+func projectile_fire(aimcast,Sname):
 	var Projectile = preload("res://Projectile.tscn")
 	if aimcast.is_colliding():
 		var target = aimcast.get_collider()
@@ -39,6 +42,7 @@ func projectile_fire(aimcast):
 		muzzle.add_child(projectile)
 		projectile.look_at(aimcast.get_collision_point(), Vector3.UP)
 		projectile.shoot = true
+		projectile.setShooterName(Sname)
 		
 
 func getAmmoCount():

@@ -48,15 +48,12 @@ theme_override_fonts/font = ExtResource("2_jbcu6")
 theme_override_font_sizes/font_size = 30
 
 [node name="GridContainer" type="GridContainer" parent="."]
-anchors_preset = 15
+anchors_preset = 1
+anchor_left = 1.0
 anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 590.0
-offset_top = 5.0
-offset_right = -760.0
-offset_bottom = -383.0
-grow_horizontal = 2
-grow_vertical = 2
+offset_left = -396.0
+offset_bottom = 547.0
+grow_horizontal = 0
 theme_override_constants/h_separation = 200
 columns = 2
 

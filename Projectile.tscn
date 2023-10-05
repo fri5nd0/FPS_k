@@ -13,6 +13,7 @@ radius = 0.098471
 height = 0.255437
 
 [node name="CharacterBody3D" type="RigidBody3D"]
+gravity_scale = 0.0
 script = ExtResource("1_tbc7e")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -30,4 +31,8 @@ skeleton = NodePath("../..")
 transform = Transform3D(1, -0.000386752, 0.000292248, -0.000288079, 0.0107177, 0.999943, -0.000389868, -0.999943, 0.0107176, 0, 0, 0)
 shape = SubResource("CapsuleShape3D_y4n0k")
 
-[connection signal="body_exited" from="Damage_area" to="." method="_on_damage_area_body_exited"]
+[node name="RayCast3D" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.00183263, -0.999998, 0, 0.999998, -0.00183263, 0, 0, 0)
+target_position = Vector3(0, -0.5, 0)
+
+[connection signal="body_entered" from="Damage_area" to="." method="_on_damage_area_body_entered"]

@@ -39,8 +39,10 @@ var ammocount
 var isGunOccupied = false
 var front_pointer = 0
 var rear_pointer = 0
+
 func _enter_tree():
 	set_multiplayer_authority(str(name).to_int())
+
 func _ready():
 	if not is_multiplayer_authority():return
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED#Captures mouse input events in the window
@@ -63,14 +65,15 @@ func _process(delta):
 				if aimcast.is_colliding():
 					var body = aimcast.get_collider()
 					if body.is_in_group('Player'):
-						reticleFriction(0.4,axis_vector.x,axis_vector.y)
-#				if AdhesionRay.is_colliding():
-#					var StickyArea = AdhesionRay.get_collider()
-#					if StickyArea.is_in_group('AdhesionArea'):
-#						ApplyReticleAdhesion(StickyArea)
+						reticleFriction(30,axis_vector.x,axis_vector.y)
+				if AdhesionRay.is_colliding():
+					var StickyArea = AdhesionRay.get_collider()
+					if StickyArea.is_in_group('AdhesionArea'):
+						ApplyReticleAdhesion(StickyArea)
 	if health <= 0 and is_dead== false:
 		_after_death.rpc()	
 		is_dead = true
+
 func _input(event):
 	if not is_multiplayer_authority():return
 	if event is InputEventMouseMotion:
@@ -81,6 +84,7 @@ func _unhandled_input(event):
 	if not is_multiplayer_authority():return
 	if event.is_action_pressed("Pause"):
 			Pause.is_paused = !Pause.is_paused
+
 func _physics_process(delta):
 	if not is_multiplayer_authority():return
 					
@@ -101,7 +105,7 @@ func _physics_process(delta):
 			gravity_direction += Vector3.DOWN * gravity * delta#Gravity acts vertically, downwards when not on floor
 			h_accel = air_accel
 	elif is_on_floor():
-			gravity_direction = -get_floor_normal()
+			gravity_direction = Vector3.DOWN
 			h_accel = normal_accel
 				
 	if Input.is_action_just_pressed("Jump") and (is_on_floor() or ground_check.is_colliding()):
@@ -118,6 +122,8 @@ func _physics_process(delta):
 			direction += transform.basis.x
 	if Input.is_action_just_pressed("Test_self_destruct"):
 		health = 0
+	if Input.is_action_just_pressed("drop_weapon"):
+		dropWeapon()
 				
 	direction = direction.normalized()#prevents player from going faster diagonally
 			
@@ -129,6 +135,7 @@ func _physics_process(delta):
 	set_velocity(movement)
 	set_up_direction(Vector3.UP)
 	move_and_slide() #If the body collides with another, it will slide along the other body rather than stop immediately
+
 @rpc("call_local")
 func add_weapon(weapon_type):
 		if weapons.size()< max_weaps:
@@ -178,6 +185,13 @@ func swapWeapon():
 		else:
 			rear_pointer = 1
 
+func dropWeapon():
+	var gunToDrop = gun.get_child(0)
+	gun.remove_child(gunToDrop)
+	var dropPos = global_transform.origin
+	gunToDrop.transform.origin(dropPos)
+	get_parent().add_child(gunToDrop)
+	
 func getAmmoCountFromCurrentGun() -> int:
 	if gun.get_child_count() > 0:
 		var gunNode = gun.get_child(0)
@@ -226,14 +240,10 @@ func reticleFriction(friction_value,x,y):
 	head.rotate_x(deg_to_rad(-y) * controller_sens*friction_value)
 	head.rotation.x = clamp(head.rotation.x, deg_to_rad(-90), deg_to_rad(90))
 
-
 func setlastshotby(lsb):
 	lastshotby = lsb
 	player_ui.lastShotbyLabel(lastshotby)
 
-func ApplyReticleAdhesion(StickyArea):
-	var target_direction = (StickyArea.global_transform.origin - aimcast.global_transform.origin).normalized()
-	var adhesion_x = rad_to_deg(atan2(-target_direction.y, target_direction.z))
-	var adhesion_y = rad_to_deg(atan2(target_direction.x, target_direction.z))
-	head.rotation.x = deg_to_rad(-adhesion_x)
-	rotate_y(deg_to_rad(adhesion_y))
+func ApplyReticleAdhesion(StickyArea: Area3D):
+	if AdhesionRay.is_colliding() and StickyArea and StickyArea.is_in_group('AdhesionArea'):
+		AdhesionRay.look_at(StickyArea.global_transform.origin)

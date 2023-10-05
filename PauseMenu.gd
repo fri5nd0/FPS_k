@@ -11,8 +11,7 @@ func set_is_paused(value):
 	get_tree().paused = is_paused# set the game's paused state to the 'is_paused' value
 	visible = is_paused# set the visibility of the control node to true if 'is_paused' is true, otherwise false
 	if visible:
-		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE) # if the pause menu is visible, set the mouse mode to visible
-		
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE) # if the pause menu is visible, set the mouse mode to visible	
 	else:
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)# otherwise set it to captured 
 func _on_ResumeB_pressed():

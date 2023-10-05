@@ -35,4 +35,4 @@ mesh = SubResource("PrismMesh_6vlqc")
 shape = SubResource("BoxShape3D_px3rf")
 
 [node name="Muzzle" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.4438)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.57742)

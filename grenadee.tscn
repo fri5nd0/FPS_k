@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://bl28iy0ygoqby"]
+[gd_scene load_steps=8 format=3 uid="uid://bl28iy0ygoqby"]
 
 [ext_resource type="Script" path="res://grenade.gd" id="1_6gl1i"]
 [ext_resource type="Texture2D" uid="uid://cn51c74gqojj5" path="res://kenney_prototypetextures/PNG/Green/texture_03.png" id="1_mdqt6"]
@@ -14,6 +14,10 @@ albedo_texture = ExtResource("1_mdqt6")
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_4urn8"]
 radius = 1.83619
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8ftsl"]
+radius = 0.087422
+height = 0.332972
 
 [node name="RigidBody3D" type="RigidBody3D"]
 collision_layer = 15
@@ -36,4 +40,10 @@ shape = SubResource("SphereShape3D_4urn8")
 
 [node name="damageCheck" type="RayCast3D" parent="."]
 
+[node name="Collision Area" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Collision Area"]
+shape = SubResource("CapsuleShape3D_8ftsl")
+
 [connection signal="timeout" from="Blast_timer" to="." method="_on_blast_timer_timeout"]
+[connection signal="body_entered" from="Collision Area" to="." method="_on_collision_area_body_entered"]

@@ -1,0 +1,43 @@
+[gd_scene load_steps=6 format=3 uid="uid://c8p60vxhqqjrn"]
+
+[ext_resource type="Script" path="res://AIBody.gd" id="1_v5b6n"]
+[ext_resource type="PackedScene" uid="uid://djys3qhoa60dh" path="res://burst_rife.tscn" id="2_k1te1"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6fyim"]
+height = 3.0
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_asaja"]
+height = 3.0
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_lc16y"]
+height = 5.56804
+radius = 16.7406
+
+[node name="AIBody" type="CharacterBody3D" groups=["Player"]]
+script = ExtResource("1_v5b6n")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00136277, 0.493526, 0)
+shape = SubResource("CapsuleShape3D_6fyim")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.47263, 0)
+mesh = SubResource("CapsuleMesh_asaja")
+
+[node name="gun" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.335656, 1.19978, 0)
+
+[node name="Burst_rife" parent="gun" instance=ExtResource("2_k1te1")]
+
+[node name="aimcast" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.31235, 0)
+target_position = Vector3(0, 0, -1000)
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.46039, 0)
+shape = SubResource("CylinderShape3D_lc16y")
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]

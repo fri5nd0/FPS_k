@@ -11,7 +11,11 @@ func _init():
 	firerate = 7
 	weapon_type = 'assault_rife'
 	shot_delay = 1/firerate
-
+	rounds = 4
+	ammoRounds = ammo*rounds
+func _input(event):
+	if Input.is_action_just_pressed('reload'):
+		reload(40)
 func _ready():
 	$Firerate_timer.one_shot = false
 

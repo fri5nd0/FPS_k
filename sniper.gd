@@ -10,7 +10,13 @@ func _init():
 	firerate = 1
 	dropped = true
 	weapon_type = 'sniper'
-	
+	rounds = 2
+	ammoRounds = ammo*rounds
+
+func _input(event):
+	if Input.is_action_just_pressed('reload'):
+		reload(10)
+		
 func _fire(aimcast,Sname):
 	if ammo > 0 and can_fire:
 		if Input.is_action_just_pressed("fire"):

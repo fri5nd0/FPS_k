@@ -6,11 +6,16 @@ func _init():
 	ammo = 30
 	damage = 100
 	dropped = true
+	rounds = 3
+	ammoRounds = rounds*ammo
 @rpc("any_peer")
 func _fire(aimcast,Sname):
 	if ammo> 0:
 		if Input.is_action_just_pressed("fire"):
 			hitscan_fire(aimcast,Sname)
+func _input(event):
+	if Input.is_action_just_pressed('reload'):
+		reload(30)
 	
 @rpc("call_local")
 func _process(delta: float) -> void:
@@ -35,16 +40,9 @@ func hitscan_fire(aimcast,Sname):
 			ammo = ammo - 1
 		else:
 			ammo = ammo -1
-func _on_hw_pickup_area_body_entered(body):
-	pass
-#	if dropped == true:
-#		if body!=null and body.is_in_group("Player"):
-#			var player = body
-#			if Input.is_action_just_pressed("interact"):
 
-#				player.add_weapon(weapon_type)
-#				set_physics_process(false)
-#				dropped = false
 			
 func updateShooterName(n):
 	ShooterName = n
+
+

@@ -30,11 +30,11 @@ func updateScoreboard():
 	var scoreboard = get_parent().get_parent().getScoreboard()
 	scoreboard = getSortedDictionary(scoreboard)
 	for player in scoreboard.keys(): 
-		var player_name = "Player " + player
+		var player_name = player
 		var score = str(scoreboard[player])
 		var PlayerLabel = Label.new()
 		var ScoreLabel = Label.new()
-		PlayerLabel.text = player_name
+		PlayerLabel.text =str(player_name)
 		ScoreLabel.text = score
 		gridContainer.add_child(PlayerLabel)
 		gridContainer.add_child(ScoreLabel)
@@ -93,3 +93,4 @@ func comparisons(left:Array,right:Array):
 		b+=1
 		
 	return sorted
+
