@@ -16,3 +16,4 @@ res://map.tscn
 res://scoreboard.tscn
 res://player_body.tscn
 res://ai_body.tscn
+res://PlayerUI.gd

@@ -9,26 +9,32 @@ const Player = preload("res://player_body.tscn")
 var enet_p = ENetMultiplayerPeer.new()
 @export var players = {}
 const HOST = 1
-func _on_host_b_pressed():
-	if gameName.text:
-		menu.hide()
-		enet_p.create_server(port)
-		multiplayer.multiplayer_peer = enet_p
-		multiplayer.peer_connected.connect(add_player)
-		var peerID = enet_p.get_unique_id()
-		add_player(1)
+var remoteGameName : String
 
+func _on_host_b_pressed():
+	menu.hide()
+	enet_p.create_server(port)
+	multiplayer.multiplayer_peer = enet_p
+	multiplayer.peer_connected.connect(add_player)
+	var peerID = enet_p.get_unique_id()
+	add_player(1)
+	upnp_setup()
+		
 func _input(event):
 	if Input.is_action_just_pressed("Jump"):
 		print(players)
 		
 func _on_join_b_pressed():
-	if gameName.text:
+	if address.text:
 		print('joinB pressed')
+		remoteGameName = gameName.text
 		menu.hide()
-		enet_p.create_client('localhost',port)
+		enet_p.create_client(address.text,port)
 		multiplayer.multiplayer_peer = enet_p
-		
+#		multiplayer.connected_to_server.connect(addPlayertodict,1)
+#		print(remoteGameName)
+#		print(enet_p.get_unique_id())
+#		addPlayertodict.rpc_id(1,enet_p.get_unique_id(),remoteGameName)
 @rpc("any_peer")	
 func add_player(peer_id):
 	var player = Player.instantiate()
@@ -36,9 +42,12 @@ func add_player(peer_id):
 	add_child(player, true)
 	scoreboard[str(peer_id)] = 0
 	if peer_id == 1:
-		players[peer_id] = gameName.text
+		players[peer_id] = 1
 	else:
-		players[peer_id] = ''
+		var lastVal :int
+		for p in players.values():
+			lastVal = p
+		players[peer_id] = lastVal+1
 func findSafeSpawn():
 	var safeQuadrant: int
 	var Q1 = map.get_node('Quadrant1')
@@ -80,9 +89,28 @@ func setPlayerNames(PName,peer_id):
 		players[PName] = str(peer_id)
 
 @rpc("any_peer")
-func addPlayertodict(peerid):
-	var gName = gameName.text
-	players[str(peerid)] = gName 
+func addPlayertodict(peerid,gName):
+	players[peerid] = gName 
 
-func getPlayerName(): 
-	pass
+@rpc("any_peer")
+func setPlayerName(gamename): 
+	remoteGameName = gamename
+
+func getGameName():
+	return gameName.text
+
+func upnp_setup():
+	var upnp = UPNP.new()
+	
+	var discover_result = upnp.discover()
+	assert(discover_result == UPNP.UPNP_RESULT_SUCCESS, \
+		"UPNP Discover Failed! Error %s" % discover_result)
+
+	assert(upnp.get_gateway() and upnp.get_gateway().is_valid_gateway(), \
+		"UPNP Invalid Gateway!")
+
+	var map_result = upnp.add_port_mapping(port)
+	assert(map_result == UPNP.UPNP_RESULT_SUCCESS, \
+		"UPNP Port Mapping Failed! Error %s" % map_result)
+	
+	print("Success! Join Address: %s" % upnp.query_external_address())

@@ -21,8 +21,9 @@ var controller_sens = 1
 var weapons =[]
 var lastshotby :String
 var weapon_dropped
-var game_name 
+var game_name : int
 var is_dead = false
+var self_id : int
 @onready var gun = $"Head/Gun"
 @onready var head = $Head #uses the spatial node 'Head'
 @onready var an_pl = $AnimationPlayer
@@ -39,7 +40,6 @@ var ammocount
 var isGunOccupied = false
 var front_pointer = 0
 var rear_pointer = 0
-
 func _enter_tree():
 	set_multiplayer_authority(str(name).to_int())
 
@@ -47,14 +47,14 @@ func _ready():
 	if not is_multiplayer_authority():return
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED#Captures mouse input events in the window
 	camera.current = true
-
 func _process(delta):
 	if not is_multiplayer_authority(): return
 	ammocount = getAmmoCountFromCurrentGun()
 	player_ui.updateAmmoCount(ammocount)
-	player_ui.playerName(name)
 	player_ui.lastShotbyLabel(lastshotby)
 	player_ui.healthLabel(health)
+	var players = get_parent().getPlayerNames()
+#	var gameName = players[int(str(name))]
 	var axis_vector = Vector2()
 	axis_vector.x = Input.get_action_strength("look_right") - Input.get_action_strength("look_left")
 	axis_vector.y = Input.get_action_strength("look_down") - Input.get_action_strength("look_up")
@@ -136,7 +136,7 @@ func _physics_process(delta):
 	set_up_direction(Vector3.UP)
 	move_and_slide() #If the body collides with another, it will slide along the other body rather than stop immediately
 
-@rpc("call_local")
+@rpc("call_local",'any_peer')
 func add_weapon(weapon_type):
 		if weapons.size()< max_weaps:
 			var weapon_scene = load("res://" + weapon_type + ".tscn")
