@@ -4,14 +4,15 @@ class_name ProjectileWeapon
 
 @onready var muzzle = $Muzzle
 
+@onready var PickupArea = $PW_pickup_area
 var fire_rate = 0.5
 var can_fire = true
-var weapon_type = 'projectile_weapon'
 func _init():
 	ammo = 20
 	dropped = true
-	rounds = 1
+	rounds = 2
 	ammoRounds = ammo*rounds
+	weapon_type = 'projectile_weapon'
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass
@@ -20,15 +21,9 @@ func _input(event):
 		reload(20)
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	if dropped == true:
-		if Input.is_action_just_pressed("interact"):
-			for body in $PW_pickup_area.get_overlapping_bodies():
-				if body.is_in_group('Player'):
-					var player = body
-					player.add_weapon.rpc(weapon_type)
-					set_physics_process(false)
-					dropped = false
-					queue_free()
+	if Input.is_action_just_pressed("interact"):
+		if dropped == true:
+			pickupWeapon(PickupArea)
 func _fire(aimcast, Sname):
 	if  ammo > 0:
 		projectile_fire(aimcast,Sname)

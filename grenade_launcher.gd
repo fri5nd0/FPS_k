@@ -3,7 +3,7 @@ extends ProjectileWeapon
 class_name Grenade_launcher
 
 # Called when the node enters the scene tree for the first time.
-
+@onready var GL_PickupArea = $PW_pickup_area
 func _init():
 	ammo = 20
 	dropped = true
@@ -14,15 +14,9 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	if dropped == true:
-		if Input.is_action_just_pressed("interact"):
-			for body in $PW_pickup_area.get_overlapping_bodies():
-				if body.is_in_group('Player'):
-					var player = body
-					player.add_weapon(weapon_type)
-					set_physics_process(false)
-					dropped = false
-					queue_free()
+	if Input.is_action_just_pressed("interact"):
+		if dropped == true:
+			pickupWeapon(GL_PickupArea)
 func _fire(aimcast,Sname):
 	if  ammo > 0:
 		projectile_fire(aimcast,Sname)

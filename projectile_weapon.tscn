@@ -29,7 +29,7 @@ transform = Transform3D(0.294134, 0, 0, 0, 0.19663, 0, 0, 0, 2.45459, 0, 0, 0)
 layers = 2
 mesh = SubResource("PrismMesh_6vlqc")
 
-[node name="PW_pickup_area" type="Area3D" parent="."]
+[node name="PW_pickup_area" type="Area3D" parent="." groups=["Pickup Areas"]]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="PW_pickup_area"]
 shape = SubResource("BoxShape3D_px3rf")

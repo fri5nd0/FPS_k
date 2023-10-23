@@ -1,41 +1,41 @@
 extends Node
+@export var Address = '127.0.0.1'
 @export var scoreboard = {}
 @onready var menu = $CanvasLayer/MainMenu
 @onready var address = $CanvasLayer/MainMenu/MC/Options/address_input
 @onready var map = $Node3D
-const port = 9999
+const port = 6000
 @onready var gameName =$CanvasLayer/MainMenu/MC/Options/LineEdit
 const Player = preload("res://player_body.tscn")
-var enet_p = ENetMultiplayerPeer.new()
 @export var players = {}
-const HOST = 1
 var remoteGameName : String
-
 func _on_host_b_pressed():
+	var enet_p = ENetMultiplayerPeer.new()
 	menu.hide()
 	enet_p.create_server(port)
 	multiplayer.multiplayer_peer = enet_p
+#	enet_p.get_host().compress(ENetConnection.COMPRESS_RANGE_CODER)
 	multiplayer.peer_connected.connect(add_player)
-	var peerID = enet_p.get_unique_id()
-	add_player(1)
-	upnp_setup()
-		
+	add_player(multiplayer.get_unique_id())
+#	upnp_setup()
 func _input(event):
 	if Input.is_action_just_pressed("Jump"):
 		print(players)
 		
 func _on_join_b_pressed():
-	if address.text:
+#	if address.text:
+		menu.hide()
+		var enet_p = ENetMultiplayerPeer.new()
 		print('joinB pressed')
 		remoteGameName = gameName.text
-		menu.hide()
-		enet_p.create_client(address.text,port)
+		enet_p.create_client(Address,port)
 		multiplayer.multiplayer_peer = enet_p
+#		enet_p.get_host().compress(ENetConnection.COMPRESS_RANGE_CODER)
 #		multiplayer.connected_to_server.connect(addPlayertodict,1)
 #		print(remoteGameName)
 #		print(enet_p.get_unique_id())
 #		addPlayertodict.rpc_id(1,enet_p.get_unique_id(),remoteGameName)
-@rpc("any_peer")	
+@rpc("any_peer", "call_local")	
 func add_player(peer_id):
 	var player = Player.instantiate()
 	player.name = str(peer_id)

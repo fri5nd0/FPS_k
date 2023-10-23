@@ -23,7 +23,7 @@ shape = SubResource("BoxShape3D_ag000")
 transform = Transform3D(0.124882, 0.0708292, -0.00361094, -0.000786736, -0.0786522, -0.155049, -0.0156657, 0.568576, -0.0209985, -0.00474036, -0.00384891, -0.00975357)
 mesh = SubResource("CylinderMesh_4nokp")
 
-[node name="HW_pickup_area" type="Area3D" parent="."]
+[node name="HW_pickup_area" type="Area3D" parent="." groups=["Pickup Areas"]]
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="HW_pickup_area"]

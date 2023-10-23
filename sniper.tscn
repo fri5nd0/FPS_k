@@ -23,7 +23,7 @@ shape = SubResource("BoxShape3D_y04gw")
 transform = Transform3D(2.11392, 0, 0, 0, 0.129079, 0, 0, 0, 0.130447, 0, 0, 0)
 mesh = SubResource("BoxMesh_uoesv")
 
-[node name="PickUpArea" type="Area3D" parent="."]
+[node name="PickUpArea" type="Area3D" parent="." groups=["Pickup Areas"]]
 transform = Transform3D(1.06005, 0, 0, 0, 1.06005, 0, 0, 0, 1.06005, 0, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="PickUpArea"]

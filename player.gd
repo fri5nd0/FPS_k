@@ -21,7 +21,7 @@ var controller_sens = 1
 var weapons =[]
 var lastshotby :String
 var weapon_dropped
-var game_name : int
+@export var game_name : int
 var is_dead = false
 var self_id : int
 @onready var gun = $"Head/Gun"
@@ -51,7 +51,7 @@ func _process(delta):
 	if not is_multiplayer_authority(): return
 	ammocount = getAmmoCountFromCurrentGun()
 	player_ui.updateAmmoCount(ammocount)
-	player_ui.lastShotbyLabel(lastshotby)
+	player_ui.lastShotbyLabel(getWeaponInHand())
 	player_ui.healthLabel(health)
 	var players = get_parent().getPlayerNames()
 #	var gameName = players[int(str(name))]
@@ -66,10 +66,10 @@ func _process(delta):
 					var body = aimcast.get_collider()
 					if body.is_in_group('Player'):
 						reticleFriction(30,axis_vector.x,axis_vector.y)
-				if AdhesionRay.is_colliding():
-					var StickyArea = AdhesionRay.get_collider()
-					if StickyArea.is_in_group('AdhesionArea'):
-						ApplyReticleAdhesion(StickyArea)
+#				if AdhesionRay.is_colliding():
+#					var StickyArea = AdhesionRay.get_collider()
+#					if StickyArea.is_in_group('AdhesionArea'):
+#						ApplyReticleAdhesion(StickyArea)
 	if health <= 0 and is_dead== false:
 		_after_death.rpc()	
 		is_dead = true
@@ -243,7 +243,18 @@ func reticleFriction(friction_value,x,y):
 func setlastshotby(lsb):
 	lastshotby = lsb
 	player_ui.lastShotbyLabel(lastshotby)
-
+	
+func getWeaponInHand():
+	if gun.get_child_count()>0:
+		return gun.get_child(0).weapon_type
+	else:
+		return ''
 func ApplyReticleAdhesion(StickyArea: Area3D):
 	if AdhesionRay.is_colliding() and StickyArea and StickyArea.is_in_group('AdhesionArea'):
-		AdhesionRay.look_at(StickyArea.global_transform.origin)
+		# Calculate the angle between the camera's current direction and the direction towards StickyArea
+		var targetDirection = (StickyArea.global_transform.origin - camera.global_transform.origin).normalized()
+		var currentDirection = camera.global_transform.basis.z.normalized()
+		var angle = rad_to_deg(acos(currentDirection.dot(targetDirection)))
+		var angleThreshold = 7.0
+		if angle >= angleThreshold:
+			camera.look_at(StickyArea.global_transform.origin, Vector3(0, 1, 0))

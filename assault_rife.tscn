@@ -28,7 +28,7 @@ mesh = SubResource("CylinderMesh_kk1x8")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_fn8sd")
 
-[node name="Pickup_area" type="Area3D" parent="."]
+[node name="Pickup_area" type="Area3D" parent="." groups=["Pickup Areas"]]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Pickup_area"]
 shape = SubResource("BoxShape3D_1m3hv")

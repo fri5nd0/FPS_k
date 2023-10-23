@@ -1,13 +1,14 @@
 extends Weapon
 class_name HitscanGun
 signal ammo_count_changed(ammo:int)
-@export var weapon_type = 'hitscangun'
+@onready var _PickupArea = $HW_pickup_area
 func _init():
 	ammo = 30
 	damage = 100
 	dropped = true
 	rounds = 3
 	ammoRounds = rounds*ammo
+	weapon_type = 'hitscangun'
 @rpc("any_peer")
 func _fire(aimcast,Sname):
 	if ammo> 0:
@@ -16,18 +17,12 @@ func _fire(aimcast,Sname):
 func _input(event):
 	if Input.is_action_just_pressed('reload'):
 		reload(30)
-	
-@rpc("call_local")
+		
 func _process(delta: float) -> void:
-	if dropped == true:
-		if Input.is_action_just_pressed("interact"):
-			for body in $HW_pickup_area.get_overlapping_bodies():
-				if body.is_in_group('Player'):
-					var player = body
-					player.add_weapon.rpc(weapon_type)
-					set_physics_process(false)
-					dropped = false
-					queue_free()
+	if Input.is_action_just_pressed("interact"):
+		if dropped == true:
+			pickupWeapon.rpc(_PickupArea)
+
 func getAmmoCount() -> int:
 	return ammo
 	

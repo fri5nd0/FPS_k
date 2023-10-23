@@ -42,23 +42,23 @@ func _on_damage_area_body_entered(body):
 	else:
 		ProjectileRicochet()
 func ProjectileRicochet():
-	var collisionVector = GetCollisionVector().normalized()
-	var currentVelocity = linear_velocity
-	var newVelocity = -currentVelocity.reflect(collisionVector)
-	linear_velocity = newVelocity
-	speed *= 0.8
-	damage *= 0.8
+	if collisonR.is_colliding():
+		var collisionVector = GetCollisionVector().normalized()
+		var currentVelocity = linear_velocity
+		var newVelocity = -currentVelocity.reflect(collisionVector)
+		linear_velocity = newVelocity
+		speed *= 0.8
+		damage *= 0.8
 
 func GetCollisionVector():
-	if collisonR.is_colliding():
 		var CollisionPoint = collisonR.get_collision_point()
 		var collisionObject = collisonR.get_collider()
 		var rayOrigin = collisonR.global_transform.origin
 		var collisionNormal = (CollisionPoint - collisionObject.global_transform.origin).normalized()#GetCollisionNormal(rayOrigin,CollisionPoint)#
 		if collisionNormal:
 			return collisionNormal
-	else: 
-		return Vector3(1/2,0,sqrt(3)/2)
+		else: 
+			return Vector3(1/2,0,sqrt(3)/2)
 
 func GetCollisionNormal(RayOrigin,RayCollisonPoint):
 	var spaceState = get_world_3d().direct_space_state

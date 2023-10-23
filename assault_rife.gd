@@ -4,6 +4,7 @@ class_name AssaultRifle
 
 var is_firing = false
 var shot_delay : int 
+@onready var AR_PickupArea = $Pickup_area
 func _init():
 	damage = 30
 	ammo = 40
@@ -29,15 +30,9 @@ func _fire(aimcast,Sname):
 
 
 func _process(delta):
-	if dropped == true:
-		if Input.is_action_just_pressed("interact"):
-			for body in $Pickup_area.get_overlapping_bodies():
-				if body.is_in_group('Player'):
-					var player = body
-					player.add_weapon.rpc(weapon_type)
-					set_physics_process(false)
-					dropped = false
-					queue_free()
+	if Input.is_action_just_pressed("interact"):
+		if dropped == true:
+			pickupWeapon(AR_PickupArea)
 
 
 func _on_firerate_timer_timeout():
