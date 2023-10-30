@@ -8,7 +8,7 @@ var speed = 100
 const deceleration = 0.05
 const gravitationalStrength = 0.098
 var Sname :String
-@onready var collisonR = $RayCast3D
+@onready var collisionR = $RayCast3D
 func _ready():
 	set_as_top_level(true)
 
@@ -42,30 +42,28 @@ func _on_damage_area_body_entered(body):
 	else:
 		ProjectileRicochet()
 func ProjectileRicochet():
-	if collisonR.is_colliding():
-		var collisionVector = GetCollisionVector().normalized()
-		var currentVelocity = linear_velocity
-		var newVelocity = -currentVelocity.reflect(collisionVector)
-		linear_velocity = newVelocity
+	if collisionR.is_colliding():
+		# Get the collision information
+		var collision = collisionR.get_collider()
+		var collision_point = collisionR.get_collision_point()
+		var collision_normal = collisionR.get_collision_normal()
+		# Check if we have a valid collision normal, and if not, calculate it
+		if collision_normal.length_squared() < 0.01:
+			collision_normal = GetCollisionNormal(global_transform.origin, collision_point)
+		# Reflect the velocity
+		var current_velocity = linear_velocity
+		var new_velocity = current_velocity.bounce(collision_normal)
+		linear_velocity = new_velocity
+		# Adjust speed and damage
 		speed *= 0.8
 		damage *= 0.8
 
-func GetCollisionVector():
-		var CollisionPoint = collisonR.get_collision_point()
-		var collisionObject = collisonR.get_collider()
-		var rayOrigin = collisonR.global_transform.origin
-		var collisionNormal = (CollisionPoint - collisionObject.global_transform.origin).normalized()#GetCollisionNormal(rayOrigin,CollisionPoint)#
-		if collisionNormal:
-			return collisionNormal
-		else: 
-			return Vector3(1/2,0,sqrt(3)/2)
-
-func GetCollisionNormal(RayOrigin,RayCollisonPoint):
-	var spaceState = get_world_3d().direct_space_state
-	var params = PhysicsRayQueryParameters3D.new()
-	params.from = RayOrigin
-	params.to = RayCollisonPoint
-	params.exclude = []
-	params.collision_mask = 1
-	var result = spaceState.intersect_ray(params)
-	return result
+func GetCollisionNormal(ray_origin, ray_collision_point):
+	var space_state = get_world_3d().direct_space_state
+	var query = PhysicsRayQueryParameters3D.create(ray_origin, ray_collision_point)
+	var result = space_state.intersect_ray(query)
+	if result.collider:
+		return result.normal.normalized()
+#	else:
+		# If no collision is found, return a default value (you can adjust this as needed)
+#		return Vector3(0, 1, 0)

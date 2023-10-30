@@ -1,4 +1,7 @@
 res://PauseMenu.tscn
+res://ProgressBar.tres
+res://HealthBar.tres
+res://grenade.gd
 res://hitscangun.tscn
 res://assault_rife.tscn
 res://sniper.tscn
@@ -16,4 +19,4 @@ res://scoreboard.tscn
 res://player_body.tscn
 res://ai_body.tscn
 res://weapon.tscn
-res://projectile_weapon.gd
+res://projectile.gd

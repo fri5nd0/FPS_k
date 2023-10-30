@@ -1,9 +1,12 @@
 MultiplayerSynchronizer
+RayCast3D
+ProgressBar
+Timer
+TextureProgressBar
 CollisionShape3D
 Area3D
 CSGBox3D
 OmniLight3D
-RayCast3D
 BurstRife
 Node3D
 CharacterBody3D
@@ -14,7 +17,6 @@ Sprite3D
 VBoxContainer
 LineEdit
 Button
-Timer
 DirectionalLight3D
 RigidBody3D
 MeshInstance3D
@@ -28,4 +30,3 @@ PanelContainer
 Node
 SpotLight3D
 CSGPolygon3D
-CSGCombiner3D

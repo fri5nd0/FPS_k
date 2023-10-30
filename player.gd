@@ -1,7 +1,6 @@
 extends CharacterBody3D
 
 class_name  Player
-signal killed_by(opponent_game_name)
 var death_count =0
 var kill_count = 0
 var health = 200
@@ -23,7 +22,17 @@ var lastshotby :String
 var weapon_dropped
 @export var game_name : int
 var is_dead = false
-var self_id : int
+var friction_coefficient = 3
+var stamina = 100
+var is_sprinting : bool
+const _staminaDecreaseRate = 30
+const _staminaIncreaseRate = 30
+const stamRegenTime = 3
+const healthRegenRate = 20
+const  healthRegenTime = 5
+var healthRegenTimer = 0
+var staminaRegenTimer = 0
+@onready var stamTimer = $StaminaTimer
 @onready var gun = $"Head/Gun"
 @onready var head = $Head #uses the spatial node 'Head'
 @onready var an_pl = $AnimationPlayer
@@ -51,8 +60,27 @@ func _process(delta):
 	if not is_multiplayer_authority(): return
 	ammocount = getAmmoCountFromCurrentGun()
 	player_ui.updateAmmoCount(ammocount)
-	player_ui.lastShotbyLabel(getWeaponInHand())
-	player_ui.healthLabel(health)
+	player_ui.weaponinhandLabel(getWeaponInHand())
+	player_ui.setStaminaBar(stamina)
+	player_ui.setHealthBar(health)
+	if Input.is_action_pressed('sprint'):
+		if stamina > 0:
+			is_sprinting = true
+			if stamina >1:
+				speed = 20
+			stamina -= _staminaDecreaseRate*delta
+			staminaRegenTimer = 0
+		else:
+			is_sprinting = false
+			staminaRegenTimer = 0
+	else:
+		is_sprinting = false
+		staminaRegenTimer += delta
+	if not is_sprinting and staminaRegenTimer >= stamRegenTime:
+		if stamina < 100:
+			stamina += _staminaIncreaseRate * delta
+		stamina = clamp(stamina, 0, 100) 
+	healthRegen(delta)
 	var players = get_parent().getPlayerNames()
 #	var gameName = players[int(str(name))]
 	var axis_vector = Vector2()
@@ -102,12 +130,17 @@ func _physics_process(delta):
 				swapWeapon.rpc()
 			
 	if not is_on_floor():
-			gravity_direction += Vector3.DOWN * gravity * delta#Gravity acts vertically, downwards when not on floor
-			h_accel = air_accel
+	# Calculate angle of elevation
+		var angle = acos(get_floor_normal().dot(Vector3.UP))# Counteract the perpendicular component of gravity
+		var normal_gravity = gravity * cos(angle)# Apply friction to slow down the player (only the horizontal components)
+		var friction = -velocity.normalized() * friction_coefficient * delta
+		velocity.x += friction.x
+		velocity.z += friction.z
+		gravity_direction += Vector3.DOWN * gravity * delta
+		h_accel = air_accel
 	elif is_on_floor():
-			gravity_direction = Vector3.DOWN
-			h_accel = normal_accel
-				
+		gravity_direction = Vector3.DOWN
+		h_accel = normal_accel
 	if Input.is_action_just_pressed("Jump") and (is_on_floor() or ground_check.is_colliding()):
 			gravity_direction = Vector3.UP * jump # Jump action, gravity vector acts upwards in the magnitude of 'jump'
 				
@@ -124,10 +157,9 @@ func _physics_process(delta):
 		health = 0
 	if Input.is_action_just_pressed("drop_weapon"):
 		dropWeapon()
-				
+	if not is_sprinting:
+		speed = 10
 	direction = direction.normalized()#prevents player from going faster diagonally
-			
-			
 	h_vel = h_vel.lerp(direction*speed,h_accel*delta)# allows player to accelerate and decelerate realistically instead of stopping right away
 	movement.z = h_vel.z + gravity_direction.z# resultant of the horizontal velocity and the gravity vector in the z axis
 	movement.x = h_vel.x + gravity_direction.x# x axis
@@ -208,7 +240,6 @@ func _after_death():
 		for child in holster.get_children():
 			holster.remove_child(child)
 	transform.origin = Vector3(45.725,34.739,0)
-	killed_by.emit(lastshotby)
 	await get_tree().create_timer(5).timeout
 	is_dead = false
 	transform.origin = _getSpawnPoint()
@@ -230,6 +261,7 @@ func _getSpawnPoint():
 
 func _recieveDamage(damage):
 	health -= damage
+	healthRegenTimer = 0
 @rpc('any_peer')
 func doDamage(damage,lsb):
 	_recieveDamage(damage)
@@ -242,7 +274,7 @@ func reticleFriction(friction_value,x,y):
 
 func setlastshotby(lsb):
 	lastshotby = lsb
-	player_ui.lastShotbyLabel(lastshotby)
+#	player_ui.lastShotbyLabel(lastshotby)
 	
 func getWeaponInHand():
 	if gun.get_child_count()>0:
@@ -251,10 +283,26 @@ func getWeaponInHand():
 		return ''
 func ApplyReticleAdhesion(StickyArea: Area3D):
 	if AdhesionRay.is_colliding() and StickyArea and StickyArea.is_in_group('AdhesionArea'):
-		# Calculate the angle between the camera's current direction and the direction towards StickyArea
-		var targetDirection = (StickyArea.global_transform.origin - camera.global_transform.origin).normalized()
-		var currentDirection = camera.global_transform.basis.z.normalized()
+		# Calculate the angle between the player's current direction and the direction towards StickyArea
+		var targetDirection = (StickyArea.global_transform.origin - global_transform.origin).normalized()
+		var currentDirection = global_transform.basis.z.normalized()
 		var angle = rad_to_deg(acos(currentDirection.dot(targetDirection)))
 		var angleThreshold = 7.0
+		# Define a blending factor to control the smoothness of the rotation
+		var blendingFactor = 0.1  # Adjust as needed
 		if angle >= angleThreshold:
-			camera.look_at(StickyArea.global_transform.origin, Vector3(0, 1, 0))
+			# Calculate the target rotation for the player using look_at
+			var targetRotation = Basis().looking_at(targetDirection, Vector3(0, 1, 0))
+			# Blend the current rotation towards the target rotation
+			var rotation = global_transform.basis
+			rotation = rotation.slerp(targetRotation, blendingFactor)
+			global_transform.basis = rotation
+		else:
+			blendingFactor = 0.0
+
+func healthRegen(delta):
+	if health < 200:
+		healthRegenTimer += delta
+		if healthRegenTimer >= healthRegenTime:
+			health += healthRegenRate*delta
+		

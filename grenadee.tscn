@@ -13,7 +13,7 @@ albedo_texture = ExtResource("1_mdqt6")
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_vhcs2"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_4urn8"]
-radius = 1.83619
+radius = 5.9254
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8ftsl"]
 radius = 0.087422
@@ -39,11 +39,15 @@ mesh = SubResource("CapsuleMesh_vhcs2")
 shape = SubResource("SphereShape3D_4urn8")
 
 [node name="damageCheck" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.39233e-05, 0, 0)
+target_position = Vector3(0, -5.935, 0)
 
 [node name="Collision Area" type="Area3D" parent="."]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Collision Area"]
 shape = SubResource("CapsuleShape3D_8ftsl")
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
 
 [connection signal="timeout" from="Blast_timer" to="." method="_on_blast_timer_timeout"]
 [connection signal="body_entered" from="Collision Area" to="." method="_on_collision_area_body_entered"]

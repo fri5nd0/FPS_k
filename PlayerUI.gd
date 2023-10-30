@@ -4,7 +4,9 @@ class_name PlayerUi
 @onready var gridContainer = $GridContainer
 @onready var ammo_label = $VBoxContainer/Label2 
 @onready var name_label = $VBoxContainer/Label3
-@onready var Lastshot = $VBoxContainer/Label4
+@onready var guninhand = $VBoxContainer/Label4
+@onready var StaminaBar = $StamBar 
+@onready var healthBar = $HealthBar
 var ammoCount :int
 var count = 0
 # Called when the node enters the scene tree for the first time.
@@ -20,12 +22,13 @@ func updateAmmoCount(ammo: int):
 func playerName(p):
 	name_label.text = str(p)
 
-func lastShotbyLabel(p):
-	Lastshot.text = str(p)
+func weaponinhandLabel(p):
+	guninhand.text = str(p)
 	var playerPeerId = 0
-func healthLabel(p):
-	$VBoxContainer/Label5.text = str(p)
-
+func setHealthBar(health):
+	healthBar.value = health
+func setStaminaBar(stamina):
+	StaminaBar.value = stamina
 func updateScoreboard():
 	var scoreboard = get_parent().get_parent().getScoreboard()
 	var players = get_parent().get_parent().getPlayerNames()

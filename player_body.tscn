@@ -95,7 +95,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.016175, 0, -0.30512)
 target_position = Vector3(0, 0, -100)
 collision_mask = 3840
 collide_with_areas = true
-collide_with_bodies = false
 
 [node name="Gun" type="Node3D" parent="Head"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.452697, -0.109354, -0.261941)
@@ -129,3 +128,7 @@ collision_layer = 3840
 [node name="CollisionShape3D" type="CollisionShape3D" parent="AdhesionArea"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.689698, 0)
 shape = SubResource("SphereShape3D_8upf2")
+
+[node name="StaminaTimer" type="Timer" parent="."]
+
+[connection signal="timeout" from="StaminaTimer" to="." method="_on_stamina_timer_timeout"]

@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://dmbbp2ldxcgkt"]
+[gd_scene load_steps=5 format=3 uid="uid://dmbbp2ldxcgkt"]
 
 [ext_resource type="Script" path="res://PlayerUI.gd" id="1_p3l3i"]
 [ext_resource type="FontFile" uid="uid://bjvi0ydeg2ykw" path="res://Calibri.ttf" id="2_jbcu6"]
+[ext_resource type="Theme" uid="uid://dmc3fimqf82bn" path="res://ProgressBar.tres" id="3_jbbpr"]
+[ext_resource type="Theme" uid="uid://icif8cdox185" path="res://HealthBar.tres" id="4_6qyr4"]
 
 [node name="CanvasLayer" type="CanvasLayer"]
 script = ExtResource("1_p3l3i")
@@ -69,3 +71,28 @@ theme_override_fonts/font = ExtResource("2_jbcu6")
 theme_override_font_sizes/font_size = 30
 text = "Kills
 "
+
+[node name="StamBar" type="ProgressBar" parent="."]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -468.0
+offset_top = -61.0
+offset_right = -45.0
+offset_bottom = -13.0
+grow_horizontal = 0
+grow_vertical = 0
+theme = ExtResource("3_jbbpr")
+rounded = true
+show_percentage = false
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+offset_left = 76.0
+offset_top = 40.0
+offset_right = 702.0
+offset_bottom = 83.0
+theme = ExtResource("4_6qyr4")
+max_value = 200.0
+show_percentage = false
